@@ -52,18 +52,6 @@ export default function Navbar() {
             );
           })}
 
-          {userInfo?.githubUrl && (
-            <Link href={userInfo.githubUrl} target="_blank" className="font-bold text-xs uppercase border-2 border-black px-2 py-1 shadow-brutal hover:shadow-none hover:translate-x-[2px] hover:translate-y-[2px] transition-all dark:border-white dark:shadow-brutal-dark">
-              GH
-            </Link>
-          )}
-
-          {userInfo?.linkedInUrl && (
-            <Link href={userInfo.linkedInUrl} target="_blank" className="font-bold text-xs uppercase border-2 border-black px-2 py-1 shadow-brutal hover:shadow-none hover:translate-x-[2px] hover:translate-y-[2px] transition-all dark:border-white dark:shadow-brutal-dark">
-              IN
-            </Link>
-          )}
-
           <div className="ml-4 border-l-4 border-black dark:border-white pl-4">
             <ThemeToggle />
           </div>
