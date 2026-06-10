@@ -1,86 +1,163 @@
-import Navbar from "@/components/shared/navbar";
-import React from "react";
-import { getOtherProjects, getProject } from "@/sanity/lib/queries";
-import { fetcher } from "@/sanity/lib/client";
+import { client } from "@/sanity/lib/client";
 import { Project } from "@/sanity/lib/types/project";
-import { PortableText } from "@portabletext/react";
-import { Badge } from "@/components/ui/badge";
-import ProjectStack from "@/components/projects/project-stack";
-import ImageSwiper from "@/components/projects/image-swiper";
-import ProjectCard from "@/components/projects/project-card";
-import { notFound } from "next/navigation";
-import Footer from "@/components/shared/footer";
 import Link from "next/link";
-import { buttonVariants } from "@/components/ui/button";
-import { cn } from "@/lib/utils";
+import Image from "next/image";
+import imageUrlBuilder from "@sanity/image-url";
+import { notFound } from "next/navigation";
+import ImageSwiper from "@/components/projects/image-swiper";
+import { PortableText } from "@portabletext/react";
+import Navbar from "@/components/shared/navbar";
+import Footer from "@/components/shared/footer";
 
-export const revalidate = 1; // revalidate at most every hour
+const builder = imageUrlBuilder(client);
 
 interface Props {
   params: { slug: string } | Promise<{ slug: string }>;
 }
 
-async function Projects({ params }: Props) {
+async function getProject(slug: string): Promise<Project | null> {
+  const query = `*[_type == "project" && slug.current == $slug][0] {
+    _id,
+    title,
+    company,
+    slug,
+    description,
+    image,
+    gif,
+    publishedAt,
+    url,
+    body,
+    "stack": stack[]->{
+      _id,
+      title,
+      description,
+      image
+    },
+    "gallery": gallery[]{
+      _key,
+      asset->{
+        _id,
+        url
+      },
+      alt
+    }
+  }`;
+  return await client.fetch(query, { slug });
+}
+
+export default async function ProjectDetailPage({ params }: Props) {
   const { slug } = await Promise.resolve(params);
-  if (!slug) {
-    return notFound();
-  }
+  const project = await getProject(slug);
 
-  const project: Project | null = await fetcher(getProject, { slug });
   if (!project) {
-    return notFound();
+    notFound();
   }
 
-  const otherProjects: Project[] = await fetcher(getOtherProjects, { slug });
+  const mainImageUrl = project.image
+    ? builder.image(project.image).width(1200).height(600).url()
+    : null;
 
   return (
-    <div className="w-full min-h-screen flex flex-col">
+    <div className="min-h-screen flex flex-col">
       <Navbar />
-      <div className="w-full h-full pt-20 pb-10 px-4 sm:px-6 lg:px-8">
-        <div className="max-w-6xl mx-auto bg-card text-foreground shadow-xl rounded-xl mt-10 p-5 sm:p-6 gap-5 border border-border relative">
-          <Badge variant="secondary">{project?.company}</Badge>
-          <h2 className="font-semibold text-foreground text-4xl my-2">
-            {project?.title}
-          </h2>
-          {project.stack && <ProjectStack stack={project?.stack} />}
-          <p className="mt-5 mb-5 text-lg text-muted-foreground">
-            {project?.description}
+      <main className="flex-grow py-12 px-4 max-w-4xl mx-auto w-full pt-24">
+        <Link
+          href="/projects"
+          className="inline-block mb-8 px-4 py-2 bg-white text-black font-black text-sm uppercase border-2 border-black shadow-brutal active:translate-x-[2px] active:translate-y-[2px] active:shadow-none transition-all dark:bg-black dark:text-white dark:border-white"
+        >
+          ← BACK TO PROJECTS
+        </Link>
+
+      <article className="flex flex-col gap-8">
+        {/* Judul Utama */}
+        <header className="border-b-4 border-black dark:border-white pb-6">
+          <h1 className="text-4xl md:text-6xl font-black uppercase tracking-tight text-black dark:text-white leading-none mb-4">
+            {project.title}
+          </h1>
+          <p className="text-lg md:text-xl font-bold text-muted-foreground uppercase tracking-wide">
+            {project.description}
           </p>
-          {project.gallery && <ImageSwiper images={project?.gallery} />}
+        </header>
 
-          <div className="prose prose-lg md:prose-xl mt-10 text-foreground">
-            <PortableText value={project?.body} />
-          </div>
-
-          {project.url && (
-            <div className="mt-8 flex justify-end">
-              <Link
-                href={project.url}
-                target="_blank"
-                rel="noreferrer"
-                className={cn(
-                  buttonVariants({ variant: "secondary", size: "lg" }),
-                  "px-6 py-3 text-base"
-                )}
-              >
-                Visit Project
-              </Link>
-            </div>
+        {/* Media / Gambar Utama */}
+        <div className="border-4 border-black dark:border-white bg-white dark:bg-black shadow-brutal-lg dark:shadow-brutal-dark overflow-hidden p-2">
+          {project.gallery && project.gallery.length > 0 ? (
+            <ImageSwiper images={project.gallery} />
+          ) : (
+            mainImageUrl && (
+              <div className="relative w-full aspect-video border-2 border-black">
+                <Image
+                  src={mainImageUrl}
+                  alt={project.title}
+                  fill
+                  className="object-cover"
+                  priority
+                />
+              </div>
+            )
           )}
         </div>
-        <div className="max-w-6xl mx-auto bg-card text-foreground shadow-xl rounded-xl mt-10 p-5 sm:p-6 border border-border">
-          <h1 className="text-3xl mr-2 mt-1.5 font-semibold">Other Projects</h1>
-          <div className="grid lg:grid-cols-3 md:grid-cols-2 grid-cols-1 grid-rows-auto gap-5 mt-8">
-            {otherProjects &&
-              otherProjects.map((project) => (
-                <ProjectCard key={project._id} project={project} />
-              ))}
+
+        {/* Grid Informasi & Spesifikasi */}
+        <div className="grid grid-cols-1 md:grid-cols-3 gap-8 items-start mt-4">
+          
+          {/* Kolom Kiri: Detail & Tautan Teknis */}
+          <div className="md:col-span-1 flex flex-col gap-6">
+            
+            {/* Box Tautan */}
+            <div className="border-4 border-black dark:border-white p-4 bg-secondary text-black flex flex-col gap-3 shadow-brutal">
+              <h3 className="font-black uppercase text-lg border-b-2 border-black pb-1">LINKS</h3>
+              {project.url && (
+                <a
+                  href={project.url}
+                  target="_blank"
+                  rel="noreferrer"
+                  className="font-bold text-sm uppercase underline hover:text-white transition-colors"
+                >
+                  🌐 Live Production
+                </a>
+              )}
+              {!project.url && (
+                <p className="text-xs font-bold uppercase text-black/60">Repository is Private</p>
+              )}
+            </div>
+
+            {/* Box Tech Stack */}
+            <div className="border-4 border-black dark:border-white p-4 bg-accent text-black flex flex-col gap-2 shadow-brutal">
+              <h3 className="font-black uppercase text-lg border-b-2 border-black pb-1">BUILT WITH</h3>
+              <div className="flex flex-wrap gap-2 pt-2">
+                {project.stack?.map((tech: any) => (
+                  <span
+                    key={tech._id}
+                    className="px-2 py-1 bg-white text-black text-xs font-black uppercase border-2 border-black"
+                  >
+                    {tech.title}
+                  </span>
+                ))}
+              </div>
+            </div>
           </div>
+
+          {/* Kolom Kanan: Deskripsi Panjang */}
+          <div className="md:col-span-2 border-4 border-black dark:border-white p-6 md:p-8 bg-white dark:bg-black shadow-brutal flex flex-col gap-4">
+            <h3 className="text-2xl font-black uppercase bg-primary text-black w-fit px-3 py-1 border-2 border-black -rotate-1">
+              PROJECT OVERVIEW
+            </h3>
+            {project.body ? (
+              <div className="prose dark:prose-invert max-w-none font-medium leading-relaxed pt-2 text-black dark:text-white">
+                <PortableText value={project.body} />
+              </div>
+            ) : (
+              <p className="whitespace-pre-line font-medium text-black dark:text-white pt-2">
+                {project.description}
+              </p>
+            )}
+          </div>
+
         </div>
-      </div>
+      </article>
+      </main>
       <Footer />
     </div>
   );
 }
-
-export default Projects;

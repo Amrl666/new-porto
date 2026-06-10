@@ -129,10 +129,12 @@ export const getUserInfo = groq`
 
 export const getExperienceInformation = groq`
 *[_type == 'experience'] {
+  _id,
   position,
   company,
   location,
   startDate,
+  endDate,
   summary,
 } | order(startDate desc)
 `;

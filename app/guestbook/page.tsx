@@ -29,8 +29,7 @@ async function getMessages(): Promise<Message[]> {
       }`,
     );
     return messages || [];
-  } catch (error) {
-    console.error('Failed to fetch messages:', error);
+  } catch {
     return [];
   }
 }
@@ -42,19 +41,19 @@ export default async function GuestbookPage() {
     <div className="min-h-screen flex flex-col">
       <Navbar />
 
-      <main className="flex-1 pt-24 pb-8 md:pt-28 md:pb-12 px-4 sm:px-6 lg:px-8">
+      <main className="flex-grow pt-24 pb-12 px-4 sm:px-6 lg:px-8">
         <div className="max-w-3xl mx-auto">
-          {/* Header */}
-          <div className="mb-8 text-center">
-            <h1 className="text-4xl sm:text-5xl font-bold mb-3 bg-gradient-to-r from-foreground to-foreground/70 bg-clip-text text-transparent">
-              Guestbook
-            </h1>
-            <p className="text-lg text-muted-foreground max-w-2xl mx-auto">
-              Join the conversation! Leave a message and say hello. I&apos;d love to hear from you.
+          <div className="mb-10 text-center md:text-left">
+            <div className="inline-block bg-secondary px-6 py-3 border-4 border-black dark:border-white shadow-brutal-lg dark:shadow-brutal-dark rotate-1 mb-4">
+              <h1 className="text-4xl md:text-6xl font-black uppercase tracking-tighter text-black">
+                GUESTBOOK
+              </h1>
+            </div>
+            <p className="text-lg md:text-xl font-bold border-l-4 border-black dark:border-white pl-4 max-w-xl mt-4">
+              Join the conversation! Leave a message and say hello.
             </p>
           </div>
 
-          {/* Chat Room */}
           <Guestbook initialMessages={messages} />
         </div>
       </main>

@@ -1,8 +1,8 @@
+"use client";
 import React from "react";
 import { Experience } from "@/sanity/lib/types/experience";
 import { formatMMYY } from "@/lib/utils";
 import { motion } from "framer-motion";
-import { CosmicDot } from "@/components/ui/cosmic-border";
 
 interface Props {
   experience: Experience[];
@@ -24,23 +24,26 @@ const itemVariants = {
   visible: {
     opacity: 1,
     x: 0,
-    transition: { duration: 0.6 },
+    transition: { duration: 0.4 },
   },
 };
 
 function ExperienceTimeline({ experience }: Props) {
   return (
-    <div className="max-w-5xl mx-auto px-4 sm:px-6 lg:px-10">
-      <motion.h2 
-        className="text-foreground leading-snug text-2xl sm:text-3xl md:text-4xl text-center underline mb-5 font-semibold"
+    <div className="max-w-4xl mx-auto px-4 sm:px-6 lg:px-10 py-12">
+      <motion.div 
+        className="mb-12 w-fit"
         initial={{ opacity: 0, y: -20 }}
         animate={{ opacity: 1, y: 0 }}
         transition={{ duration: 0.6 }}
       >
-        Experience
-      </motion.h2>
+        <h2 className="text-4xl md:text-5xl font-black uppercase text-black dark:text-white bg-primary px-4 py-2 border-4 border-black dark:border-white shadow-brutal dark:shadow-brutal-dark -rotate-1 inline-block">
+          EXPERIENCE
+        </h2>
+      </motion.div>
+
       <motion.ol 
-        className="relative border-s border-border"
+        className="relative border-l-8 border-black dark:border-white ml-3 md:ml-0"
         variants={containerVariants}
         initial="hidden"
         animate="visible"
@@ -48,59 +51,32 @@ function ExperienceTimeline({ experience }: Props) {
         {experience.map((exp, idx) => (
           <motion.li
             key={exp._id || `experience-${idx}`}
-            className={`${idx === experience.length - 1 ? "" : "mb-10"} ms-4 group`}
+            className="mb-12 ml-8 md:ml-12 group"
             variants={itemVariants}
           >
-            {/* Cosmic timeline marker */}
+            {/* Marker Kotak Brutalist */}
             <motion.div 
-              className="absolute w-6 h-6 bg-gradient-to-r from-cyan-600 via-purple-600 to-cyan-600 rounded-full -start-[15px] border-4 border-background cursor-pointer"
-              initial={{ scale: 0, opacity: 0 }}
-              animate={{ scale: 1, opacity: 1 }}
-              whileHover={{ scale: 1.3, boxShadow: "0 0 20px rgba(34, 211, 238, 0.6)" }}
-              transition={{ duration: 0.4, delay: 0.05 }}
-            >
-              {/* Pulsing core */}
-              <motion.div 
-                className="absolute inset-1 bg-gradient-to-r from-cyan-400 to-purple-400 rounded-full"
-                animate={{ opacity: [0.4, 0.8, 0.4] }}
-                transition={{ duration: 2, repeat: Infinity }}
-              />
-            </motion.div>
+              className="absolute w-8 h-8 bg-secondary border-4 border-black dark:border-white -left-[20px] top-2 transition-transform group-hover:-translate-y-2 group-hover:-translate-x-2 group-hover:shadow-[4px_4px_0px_0px_rgba(0,0,0,1)] dark:group-hover:shadow-[4px_4px_0px_0px_rgba(255,255,255,1)]"
+            />
 
-            {/* Glow line to next */}
-            {idx < experience.length - 1 && (
-              <motion.div 
-                className="absolute w-0.5 h-10 bg-gradient-to-b from-cyan-500/60 to-transparent -start-[6.3px] top-8"
-                initial={{ height: 0 }}
-                animate={{ height: 40 }}
-                transition={{ duration: 0.6, delay: 0.2 }}
-              />
-            )}
-
-            <motion.time 
-              className="mb-1 text-sm font-normal leading-none text-muted-foreground"
-              initial={{ opacity: 0 }}
-              animate={{ opacity: 1 }}
-              transition={{ duration: 0.4, delay: 0.1 }}
-            >
-              {formatMMYY(exp.startDate)}
-            </motion.time>
-            <motion.h3 
-              className="text-lg font-semibold text-foreground group-hover:text-cyan-400 transition-colors"
-              initial={{ opacity: 0 }}
-              animate={{ opacity: 1 }}
-              transition={{ duration: 0.4, delay: 0.15 }}
-            >
-              {`${exp.position} at ${exp.company}, ${exp.location}`}
-            </motion.h3>
-            <motion.p 
-              className="mb-4 text-base font-normal text-muted-foreground group-hover:text-foreground/80 transition-colors"
-              initial={{ opacity: 0 }}
-              animate={{ opacity: 1 }}
-              transition={{ duration: 0.4, delay: 0.2 }}
-            >
-              {exp.summary}
-            </motion.p>
+            {/* Kotak Konten Experience */}
+            <div className="bg-white dark:bg-black border-4 border-black dark:border-white p-6 shadow-brutal-lg dark:shadow-brutal-dark transition-transform hover:-translate-y-1">
+              <time className="inline-block mb-3 px-3 py-1 bg-accent border-2 border-black dark:border-white text-sm font-bold uppercase text-black">
+                {formatMMYY(exp.startDate)} — {exp.endDate ? formatMMYY(exp.endDate) : "PRESENT"}
+              </time>
+              
+              <h3 className="text-2xl font-black uppercase text-black dark:text-white mb-1">
+                {exp.position}
+              </h3>
+              
+              <h4 className="text-lg font-bold text-black/70 dark:text-white/70 mb-4 border-b-4 border-black dark:border-white pb-2 w-fit">
+                @ {exp.company} <span className="text-sm">({exp.location})</span>
+              </h4>
+              
+              <p className="text-base font-medium text-black dark:text-white leading-relaxed">
+                {exp.summary}
+              </p>
+            </div>
           </motion.li>
         ))}
       </motion.ol>

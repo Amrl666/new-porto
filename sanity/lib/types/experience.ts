@@ -4,5 +4,6 @@ export interface Experience {
   company: string
   location: string,
   startDate:string,
+  endDate?:string,
   summary:string
 }

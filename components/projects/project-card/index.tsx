@@ -1,101 +1,82 @@
 "use client";
-import { Project } from "@/sanity/lib/types/project";
-import {
-  Card,
-  CardContent,
-  CardDescription,
-  CardFooter,
-  CardHeader,
-  CardTitle,
-} from "@/components/ui/card";
+
+import Link from "next/link";
 import Image from "next/image";
-import { useState } from "react";
+import { Project } from "@/sanity/lib/types/project";
 import imageUrlBuilder from "@sanity/image-url";
 import { client } from "@/sanity/lib/client";
-import Link from "next/link";
-import { buttonVariants } from "@/components/ui/button";
-import { cn } from "@/lib/utils";
-import { motion } from "framer-motion";
+
+const builder = imageUrlBuilder(client);
 
 interface Props {
   project: Project;
 }
 
-const builder = imageUrlBuilder(client);
-const FALLBACK_IMAGE =
-  "data:image/svg+xml;base64,PHN2ZyB4bWxucz0iaHR0cDovL3d3dy53My5vcmcvMjAwMC9zdmciIHdpZHRoPSI0MDAiIGhlaWdodD0iMzAwIj48cmVjdCB3aWR0aD0iMTAwJSIgaGVpZ2h0PSIxMDAlIiBmaWxsPSIjZTVlN2ViIi8+PHRleHQgeD0iNTAlIiB5PSI1MCUiIGRvbWluYW50LWJhc2VsaW5lPSJtaWRkbGUiIHRleHQtYW5jaG9yPSJtaWRkbGUiIGZpbGw9IiM5Y2EzYWYiIGZvbnQtZmFtaWx5PSJBcmlhbCIgZm9udC1zaXplPSIyMCI+Tm8gaW1hZ2U8L3RleHQ+PC9zdmc+";
-
-function ProjectCard({ project }: Props) {
-  const [isHovering, setIsHovering] = useState(false);
-  const imageSrc = project.image
-    ? builder.image(project.image).url()
-    : FALLBACK_IMAGE;
-  const altText = project.image?.alt || project.title || "Project image";
+export default function ProjectCard({ project }: Props) {
+  const imageUrl = project.image 
+    ? builder.image(project.image).width(600).height(400).url() 
+    : "/file.svg";
 
   return (
-    <motion.div
-      initial={{ opacity: 0, y: 20 }}
-      animate={{ opacity: 1, y: 0 }}
-      whileHover={{ y: -5 }}
-      transition={{ duration: 0.5, type: "spring", stiffness: 300, damping: 30 }}
-      key={project._id}
-    >
-      <Card
-        className="bg-card/50 backdrop-blur-sm h-full transition-all duration-500 hover:shadow-2xl hover:border-primary/50 group overflow-hidden border-muted"
-        onMouseEnter={() => setIsHovering(true)}
-        onMouseLeave={() => setIsHovering(false)}
-      >
-      <CardHeader>
-        <CardTitle className="text-xl font-bold tracking-tight">
-          <Link href={project.url} target="_blank" className="hover:text-primary transition-colors flex items-center gap-2">
-            {project.title}
-          </Link>
-        </CardTitle>
-        <CardDescription>{project.company}</CardDescription>
-      </CardHeader>
-      <CardContent>
-        <div className="overflow-hidden rounded-md border border-muted relative aspect-video">
-          <motion.div
-            key={isHovering ? "gif" : "image"}
-            initial={{ opacity: 0 }}
-            animate={{ opacity: 1 }}
-            exit={{ opacity: 0 }}
-            transition={{ duration: 0.3 }}
-          >
-            {isHovering && project.gif ? (
-              <Image
-                src={builder.image(project.gif).url()}
-                className="rounded-md max-w-full"
-                alt="project preview"
-                width={200}
-                height={200}
-                unoptimized={true}
-                layout={"responsive"}
-              />
-            ) : (
-              <Image
-                src={imageSrc}
-                className="rounded-md max-w-full"
-                alt={altText}
-                width={400}
-                height={200}
-              />
-            )}
-          </motion.div>
+    <div className="bg-white dark:bg-black border-4 border-black dark:border-white rounded-none shadow-brutal-lg dark:shadow-brutal-dark transition-all hover:-translate-y-2 hover:shadow-[12px_12px_0px_0px_rgba(0,0,0,1)] dark:hover:shadow-[12px_12px_0px_0px_rgba(255,255,255,1)] flex flex-col h-full group">
+      {/* Gambar Project */}
+      <div className="relative w-full aspect-video border-b-4 border-black dark:border-white bg-accent overflow-hidden">
+        <Image
+          src={imageUrl}
+          alt={project.title}
+          fill
+          className="object-cover grayscale group-hover:grayscale-0 transition-all duration-300 scale-100 group-hover:scale-105"
+        />
       </div>
-      </CardContent>
-      <CardFooter className="flex flex-col items-start gap-3">
-        <CardDescription>{project.description}</CardDescription>
-          <Link
-            href={`/projects/${project?.slug.current}`}
-            className={cn(buttonVariants({ variant: "outline", size: "sm" }))}
+
+      {/* Konten Teks */}
+      <div className="p-6 flex flex-col flex-grow gap-4">
+        <h3 className="text-2xl font-black uppercase tracking-tight text-black dark:text-white">
+          {project.title}
+        </h3>
+        
+        <p className="text-sm font-medium text-black/80 dark:text-white/80 line-clamp-3 leading-relaxed flex-grow">
+          {project.description}
+        </p>
+
+        {/* Tech Stack Badges */}
+        {project.stack && (
+          <div className="flex flex-wrap gap-2 pt-2">
+            {project.stack.map((tech: any) => (
+              <span 
+                key={tech._id || tech.title} 
+                className="px-2 py-1 text-xs font-bold uppercase bg-secondary text-black border-2 border-black dark:border-white rounded-none shadow-brutal-sm"
+              >
+                {tech.title}
+              </span>
+            ))}
+          </div>
+        )}
+      </div>
+
+      {/* Tombol Aksi */}
+      <div className="border-t-4 border-black dark:border-white p-4 bg-gray-50 dark:bg-zinc-900 grid grid-cols-2 gap-2">
+        <Link
+          href={`/projects/${project.slug.current}`}
+          className="text-center py-2 bg-primary text-black font-black text-xs uppercase border-2 border-black shadow-brutal active:translate-x-[2px] active:translate-y-[2px] active:shadow-none transition-all"
+        >
+          DETAILS →
+        </Link>
+        {project.url ? (
+          <a
+            href={project.url}
+            target="_blank"
+            rel="noreferrer"
+            className="text-center py-2 bg-accent text-black font-black text-xs uppercase border-2 border-black shadow-brutal active:translate-x-[2px] active:translate-y-[2px] active:shadow-none transition-all"
           >
-            Read More
-          </Link>
-      </CardFooter>
-    </Card>
-    </motion.div>
+            LIVE DEMO
+          </a>
+        ) : (
+          <span className="text-center py-2 bg-gray-200 text-gray-500 font-bold text-xs uppercase border-2 border-gray-300 cursor-not-allowed">
+            NO DEMO
+          </span>
+        )}
+      </div>
+    </div>
   );
 }
-
-export default ProjectCard;

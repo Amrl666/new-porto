@@ -87,7 +87,7 @@ export default function Home() {
       <div>
         <Navbar />
 
-        <div className="relative isolate px-4 sm:px-6 lg:px-8 pt-14">
+        <div className="relative isolate px-4 sm:px-6 lg:px-8 pt-0">
           <main className="min-h-screen">
             <Hero userInfo={userInfo} />
             <ExperienceTimeline experience={experience} />

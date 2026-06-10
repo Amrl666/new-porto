@@ -1,186 +1,80 @@
 "use client";
-import { ArrowRight, Github, Linkedin } from "lucide-react";
-import { Badge, badgeVariants } from "../../ui/badge";
-import { cn } from "@/lib/utils";
 import Link from "next/link";
-import { buttonVariants } from "../../ui/button";
-import { UserInfo } from "@/sanity/lib/types/userInfo";
 import Image from "next/image";
-import { useState } from "react";
-import { motion } from "framer-motion";
-import { FloatingAstronaut } from "../../ui/floating-astronaut";
-import { CosmicDot } from "../../ui/cosmic-border";
+import { Button } from "@/components/ui/button";
+import { UserInfo } from "@/sanity/lib/types/userInfo";
 
 interface Props {
-	userInfo: UserInfo;
+  userInfo: UserInfo;
 }
 
-const containerVariants = {
-	hidden: { opacity: 0 },
-	visible: {
-		opacity: 1,
-		transition: {
-			staggerChildren: 0.1,
-			delayChildren: 0.2,
-		},
-	},
-};
-
-const itemVariants = {
-	hidden: { opacity: 0, y: 20 },
-	visible: {
-		opacity: 1,
-		y: 0,
-		transition: { duration: 0.8 },
-	},
-};
-
 export default function Hero({ userInfo }: Props) {
-	const [imgError, setImgError] = useState(false);
+  return (
+    <section className="min-h-[85vh] flex flex-col justify-center items-center pt-10 pb-20 overflow-hidden">
+      <div className="container mx-auto px-4 grid grid-cols-1 lg:grid-cols-2 gap-12 items-center">
+        
+        {/* Kiri: Teks Raksasa */}
+        <div className="flex flex-col gap-6 order-2 lg:order-1 relative z-10">
+          <div className="inline-block w-fit bg-secondary px-4 py-2 border-2 border-black shadow-brutal dark:border-white dark:shadow-brutal-dark -rotate-2">
+            <p className="font-bold text-sm md:text-base uppercase tracking-widest text-black">
+              {userInfo?.title || "Hello World, I'm"}
+            </p>
+          </div>
+          
+          <h1 className="text-6xl md:text-7xl lg:text-8xl font-black uppercase leading-[0.9] tracking-tighter">
+            {userInfo?.name || "Amirul"} <br />
+            <span className="text-primary">{userInfo?.surname || "Mabruri"}</span>
+          </h1>
+          
+          <p className="text-sm md:text-base font-medium max-w-lg border-l-4 border-black pl-4 dark:border-white bg-white/50 dark:bg-black/50 p-2">
+				{userInfo?.summary || "A Fullstack Developer & IT Enthusiast."}
+			</p>
+          
+          <div className="flex flex-wrap gap-4 mt-4">
+            <Button asChild size="lg" className="bg-primary text-black hover:bg-primary">
+              <Link href="/projects">VIEW PROJECTS</Link>
+            </Button>
+            {userInfo?.cv?.url && (
+              <Button asChild variant="outline" size="lg" className="bg-accent text-black hover:bg-accent border-black dark:border-white">
+                <Link href={userInfo.cv.url} target="_blank">DOWNLOAD CV</Link>
+              </Button>
+            )}
+          </div>
 
-	return (
-		<div className="mx-auto max-w-5xl px-4 sm:px-6 pt-10 md:pt-32 pb-16">
-			<div className="w-full grid grid-cols-1 md:grid-cols-[2fr_1fr] gap-x-5">
-				<motion.div 
-					className="md:order-1 order-2"
-					variants={containerVariants}
-					initial="hidden"
-					animate="visible"
-				>
-					<motion.div 
-						className="flex justify-start items-center gap-4"
-						variants={itemVariants}
-					>
-						<Badge className={cn(badgeVariants({ variant: "default" }))}>
-							{userInfo && userInfo.title}
-						</Badge>
-						<div className="flex justify-start gap-2">
-							{userInfo.githubUrl && (
-								<motion.div
-									whileHover={{ scale: 1.2, rotate: 5 }}
-									whileTap={{ scale: 0.95 }}
-									transition={{ type: "spring", stiffness: 400, damping: 10 }}
-								>
-									<Link target="_blank" href={userInfo.githubUrl}>
-										<Github size={25} />
-									</Link>
-								</motion.div>
-							)}
-							{userInfo.linkedInUrl && (
-								<motion.div
-									whileHover={{ scale: 1.2, rotate: -5 }}
-									whileTap={{ scale: 0.95 }}
-									transition={{ type: "spring", stiffness: 400, damping: 10 }}
-								>
-									<Link target="_blank" href={userInfo.linkedInUrl}>
-										<Linkedin size={25} />
-									</Link>
-								</motion.div>
-							)}
-						</div>
-					</motion.div>
+          <div className="flex gap-4 mt-2">
+            {userInfo?.githubUrl && (
+              <Link href={userInfo.githubUrl} target="_blank" className="font-bold uppercase text-sm border-2 border-black px-3 py-1 shadow-brutal hover:shadow-none hover:translate-x-[2px] hover:translate-y-[2px] transition-all dark:border-white dark:shadow-brutal-dark">
+                GitHub
+              </Link>
+            )}
+            {userInfo?.linkedInUrl && (
+              <Link href={userInfo.linkedInUrl} target="_blank" className="font-bold uppercase text-sm border-2 border-black px-3 py-1 shadow-brutal hover:shadow-none hover:translate-x-[2px] hover:translate-y-[2px] transition-all dark:border-white dark:shadow-brutal-dark">
+                LinkedIn
+              </Link>
+            )}
+          </div>
+        </div>
 
-					<motion.p 
-						className="text-4xl sm:text-5xl md:text-6xl leading-tight tracking-tighter mt-4"
-						variants={itemVariants}
-					>
-						{userInfo && `${userInfo?.name} ${userInfo?.surname}`}
-					</motion.p>
+        {/* Kanan: Foto/Ilustrasi Brutalist */}
+        <div className="relative order-1 lg:order-2 flex justify-center items-center">
+          <div className="absolute inset-0 bg-secondary translate-x-4 translate-y-4 border-4 border-black dark:border-white max-w-sm mx-auto aspect-square"></div>
+          
+          <div className="relative z-10 border-4 border-black dark:border-white bg-white overflow-hidden shadow-brutal-lg dark:shadow-brutal-dark transition-transform hover:-translate-y-2 hover:-translate-x-2">
+            <Image
+              src="/poto.webp"
+              alt={`${userInfo?.name || "Amirul"} ${userInfo?.surname || "Mabruri"}`}
+              width={384}
+              height={384}
+              className="object-cover grayscale hover:grayscale-0 transition-all duration-500 w-full max-w-sm aspect-square"
+              priority
+            />
+            <div className="absolute bottom-4 left-4 bg-primary px-3 py-1 border-2 border-black font-bold text-black text-sm uppercase -rotate-3 shadow-brutal">
+              OPEN TO WORK
+            </div>
+          </div>
+        </div>
 
-					<motion.p 
-						className="text-muted-foreground mt-5"
-						variants={itemVariants}
-					>
-						{userInfo && userInfo.summary}
-					</motion.p>
-
-					<motion.div 
-						className="flex flex-col sm:flex-row justify-center md:justify-start gap-3 mt-10"
-						variants={itemVariants}
-					>
-						<motion.div
-							whileHover={{ scale: 1.05 }}
-							whileTap={{ scale: 0.95 }}
-							transition={{ type: "spring", stiffness: 400, damping: 10 }}
-						>
-							<Link
-								href="/projects"
-								className={cn(
-									buttonVariants({ variant: "default" }),
-									"flex justify-center items-center shadow-lg hover:shadow-xl"
-								)}
-							>
-								See Projects <ArrowRight className="ml-1" size={15} />
-							</Link>
-						</motion.div>
-						{userInfo?.cv?.url && (
-							<motion.div
-								whileHover={{ scale: 1.05 }}
-								whileTap={{ scale: 0.95 }}
-								transition={{ type: "spring", stiffness: 400, damping: 10 }}
-							>
-								<Link
-									href={userInfo.cv.url}
-									target="_blank"
-									className={cn(
-										buttonVariants({ variant: "secondary" }),
-										"flex justify-center items-center"
-									)}
-								>
-									Download CV
-								</Link>
-							</motion.div>
-						)}
-					</motion.div>
-				</motion.div>
-
-				<motion.div 
-					className="hidden md:flex md:order-2 order-1 pb-10 md:pb-0 justify-center sm:justify-start md:justify-end relative"
-					initial={{ opacity: 0, scale: 0.95, rotateY: -20 }}
-					animate={{ opacity: 1, scale: 1, rotateY: 0 }}
-					transition={{ duration: 1, ease: "easeOut", delay: 0.3 }}
-				>
-					{/* Cosmic decorations */}
-					<div className="absolute -top-10 -right-10 hidden lg:block">
-						<FloatingAstronaut size={60} emoji="👽" />
-					</div>
-					<div className="absolute top-20 -left-5 hidden lg:block">
-						<CosmicDot color="cyan" animated />
-					</div>
-					<div className="absolute -bottom-5 right-10 hidden lg:block">
-						<CosmicDot color="purple" animated />
-					</div>
-
-					{!imgError ? (
-						<div className="relative">
-							<Image
-								src="/potooooo.png"
-								alt="Hero Photo"
-								className="rounded-xl w-full max-w-[400px] h-auto sm:w-auto shadow-lg"
-								width={400}
-								height={400}
-								priority
-								onError={() => setImgError(true)}
-							/>
-							{/* Glow effect */}
-							<motion.div
-								className="absolute inset-0 rounded-xl bg-gradient-to-r from-cyan-500/20 to-purple-500/20 blur-2xl -z-10"
-								animate={{ opacity: [0.3, 0.6, 0.3] }}
-								transition={{ duration: 3, repeat: Infinity }}
-							/>
-						</div>
-					) : (
-						<div className="rounded-xl overflow-hidden bg-gradient-to-br from-muted to-muted/80 w-full max-w-[400px] sm:w-auto">
-							<div className="w-full aspect-square max-w-[400px] flex items-center justify-center">
-								<div className="text-center">
-									<div className="text-6xl mb-4"></div>
-									<p className="text-muted-foreground">Hero Image</p>
-								</div>
-							</div>
-						</div>
-					)}
-				</motion.div>
-			</div>
-		</div>
-	);
+      </div>
+    </section>
+  );
 }

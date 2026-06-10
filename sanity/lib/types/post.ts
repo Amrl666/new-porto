@@ -18,5 +18,10 @@ export interface Slug{
 
 export interface Image{
     _type: string,
-    alt: string
+    alt: string,
+    asset: {
+        _ref?: string,
+        _id?: string,
+        url?: string
+    }
 }
