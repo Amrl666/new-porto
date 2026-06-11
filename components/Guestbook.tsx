@@ -1,6 +1,7 @@
 'use client';
 
 import { useOptimistic, useRef, useState, useTransition, useEffect, FormEvent } from 'react';
+import { motion } from 'framer-motion';
 import { addMessage, deleteMessage } from '@/app/actions';
 import { Button } from '@/components/ui/button';
 
@@ -97,7 +98,13 @@ export function Guestbook({ initialMessages }: GuestbookProps) {
   return (
     <div className="max-w-2xl mx-auto px-4 py-12 flex flex-col gap-12">
       {/* Form Section */}
-      <div className="border-4 border-black dark:border-white p-6 bg-white dark:bg-black shadow-brutal-lg">
+      <motion.div 
+        className="border-4 border-black dark:border-white p-6 bg-white dark:bg-black shadow-brutal-lg"
+        initial={{ opacity: 0, y: 30 }}
+        whileInView={{ opacity: 1, y: 0 }}
+        viewport={{ once: true }}
+        transition={{ duration: 0.5 }}
+      >
         <h3 className="text-2xl font-black uppercase mb-4 text-black dark:text-white">Sign the Guestbook</h3>
         
         <form ref={formRef} onSubmit={handleSubmit} className="flex flex-col gap-4">
@@ -155,10 +162,16 @@ export function Guestbook({ initialMessages }: GuestbookProps) {
             />
           )}
         </div>
-      </div>
+      </motion.div>
 
       {/* Message Feed List */}
-      <div className="flex flex-col gap-6">
+      <motion.div 
+        className="flex flex-col gap-6"
+        initial={{ opacity: 0 }}
+        whileInView={{ opacity: 1 }}
+        viewport={{ once: true, margin: "-50px" }}
+        transition={{ duration: 0.3 }}
+      >
         <h4 className="text-xl font-black uppercase border-b-4 border-black dark:border-white pb-2 w-fit text-black dark:text-white">
           Recent Signatures ({optimisticMessages.length})
         </h4>
@@ -181,7 +194,13 @@ export function Guestbook({ initialMessages }: GuestbookProps) {
                       {formatDate(msg.createdAt)}
                     </div>
                   )}
-                  <div className="border-4 border-black dark:border-white p-4 bg-white dark:bg-black shadow-brutal flex flex-col gap-1 group">
+                  <motion.div 
+                    className="border-4 border-black dark:border-white p-4 bg-white dark:bg-black shadow-brutal flex flex-col gap-1 group"
+                    initial={{ opacity: 0, y: 20 }}
+                    whileInView={{ opacity: 1, y: 0 }}
+                    viewport={{ once: true }}
+                    transition={{ duration: 0.4, delay: idx * 0.05 }}
+                  >
                     <div className="flex justify-between items-center border-b-2 border-black dark:border-white pb-1 mb-2">
                       <span className="font-black text-base uppercase text-white bg-black px-2 py-0.5 dark:bg-white dark:text-black">
                         {msg.name}
@@ -204,13 +223,13 @@ export function Guestbook({ initialMessages }: GuestbookProps) {
                     <p className="text-sm font-medium leading-relaxed text-black dark:text-white">
                       {msg.message}
                     </p>
-                  </div>
+                  </motion.div>
                 </div>
               );
             })}
           </div>
         )}
-      </div>
+      </motion.div>
     </div>
   );
 }

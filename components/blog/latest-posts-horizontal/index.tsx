@@ -53,7 +53,8 @@ function LatestPostsHorizontal({ slug }: Props) {
       <motion.h2 
         className="text-foreground leading-snug text-4xl text-center underline mb-5 font-semibold mt-10"
         initial={{ opacity: 0, y: -20 }}
-        animate={{ opacity: 1, y: 0 }}
+        whileInView={{ opacity: 1, y: 0 }}
+        viewport={{ once: true }}
         transition={{ duration: 0.6 }}
       >
         Latest Posts
@@ -62,7 +63,8 @@ function LatestPostsHorizontal({ slug }: Props) {
         className="mt-10 flex flex-col max-w-4xl gap-5 justify-center mx-5 lg:mx-auto"
         variants={containerVariants}
         initial="hidden"
-        animate="visible"
+        whileInView="visible"
+        viewport={{ once: true, margin: "-100px" }}
       >
         {posts &&
           posts?.map((post) => (

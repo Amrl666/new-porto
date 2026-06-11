@@ -14,6 +14,26 @@ const builder = imageUrlBuilder(client);
 const FALLBACK_IMAGE =
   "data:image/svg+xml;base64,PHN2ZyB4bWxucz0iaHR0cDovL3d3dy53My5vcmcvMjAwMC9zdmciIHdpZHRoPSIxNTAiIGhlaWdodD0iMTUwIj48cmVjdCB3aWR0aD0iMTAwJSIgaGVpZ2h0PSIxMDAlIiBmaWxsPSIjZTVlN2ViIi8+PHRleHQgeD0iNTAlIiB5PSI1MCUiIGRvbWluYW50LWJhc2VsaW5lPSJtaWRkbGUiIHRleHQtYW5jaG9yPSJtaWRkbGUiIGZpbGw9IiM5Y2EzYWYiIGZvbnQtZmFtaWx5PSJBcmlhbCIgZm9udC1zaXplPSIxNCI+Tm8gaW1hZ2U8L3RleHQ+PC9zdmc+";
 
+const containerVariants = {
+  hidden: { opacity: 0 },
+  visible: {
+    opacity: 1,
+    transition: {
+      staggerChildren: 0.1,
+      delayChildren: 0.1,
+    },
+  },
+};
+
+const itemVariants = {
+  hidden: { opacity: 0, y: 30 },
+  visible: {
+    opacity: 1,
+    y: 0,
+    transition: { duration: 0.4 },
+  },
+};
+
 function Stack() {
   const [selected, setSelected] = useState<Technology | null>(null);
   const { data: technologies } = useSWR<Technology[]>(
@@ -25,7 +45,13 @@ function Stack() {
     <div className="min-h-screen flex flex-col">
       <Navbar />
       <main className="flex-grow py-16 px-4 max-w-4xl mx-auto w-full pt-24">
-        <div className="mb-16 text-center md:text-left">
+        <motion.div 
+          className="mb-16 text-center md:text-left"
+          initial={{ opacity: 0, y: -20 }}
+          whileInView={{ opacity: 1, y: 0 }}
+          viewport={{ once: true }}
+          transition={{ duration: 0.5 }}
+        >
           <div className="inline-block bg-accent px-6 py-3 border-4 border-black dark:border-white shadow-brutal-lg dark:shadow-brutal-dark -rotate-1 mb-4">
             <h1 className="text-4xl md:text-6xl font-black uppercase tracking-tighter text-black">
               MY WORKSPACE
@@ -34,20 +60,29 @@ function Stack() {
           <p className="text-lg md:text-xl font-bold border-l-4 border-black dark:border-white pl-4 max-w-xl mt-4">
             A detailed inventory of code architecture, production tools, and hardware equipment I interface with.
           </p>
-        </div>
+        </motion.div>
 
         {!technologies ? (
           <div className="border-4 border-black dark:border-white p-12 text-center bg-white dark:bg-black animate-pulse">
             <p className="text-xl font-black uppercase">Loading...</p>
           </div>
         ) : (
-          <div className="grid grid-cols-1 sm:grid-cols-2 md:grid-cols-3 gap-6">
+          <motion.div 
+            className="grid grid-cols-1 sm:grid-cols-2 md:grid-cols-3 gap-6"
+            variants={containerVariants}
+            initial="hidden"
+            whileInView="visible"
+            viewport={{ once: true, margin: "-100px" }}
+          >
             {technologies.map((t) => (
-              <div
+              <motion.div
                 key={t._id}
-                className="bg-white dark:bg-black border-4 border-black dark:border-white p-6 shadow-brutal hover:-translate-y-2 hover:shadow-brutal-lg transition-all cursor-pointer flex flex-col items-center gap-4 group"
-                onClick={() => setSelected(t)}
+                variants={itemVariants}
               >
+                <div
+                  className="bg-white dark:bg-black border-4 border-black dark:border-white p-6 shadow-brutal hover:-translate-y-2 hover:shadow-brutal-lg transition-all cursor-pointer flex flex-col items-center gap-4 group"
+                  onClick={() => setSelected(t)}
+                >
                 <div className="w-20 h-20 flex items-center justify-center bg-white border-2 border-black p-2 group-hover:rotate-6 transition-transform">
                   <Image
                     className="object-contain"
@@ -72,8 +107,9 @@ function Stack() {
                   )} */}
                 </div>
               </div>
+            </motion.div>
             ))}
-          </div>
+          </motion.div>
         )}
       </main>
       <Footer />
