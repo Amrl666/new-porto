@@ -1,5 +1,3 @@
-"use client";
-import { motion } from "framer-motion";
 import { Post } from "@/sanity/lib/types/post";
 import Link from "next/link";
 import Image from "next/image";
@@ -15,67 +13,62 @@ interface Props {
 
 export default function BlogGrid({ posts }: Props) {
   return (
-    <motion.div 
-      className="grid grid-cols-1 md:grid-cols-2 gap-8"
-      variants={{
-        hidden: { opacity: 0 },
-        visible: { opacity: 1, transition: { staggerChildren: 0.1, delayChildren: 0.1 } }
-      }}
-      initial="hidden"
-      whileInView="visible"
-      viewport={{ once: true, margin: "-100px" }}
-    >
-      {posts.map((post) => {
+    <div className="grid grid-cols-1 gap-8 min-[600px]:grid-cols-2">
+      {posts.map((post, idx) => {
         const imageUrl = post.mainImage
-          ? builder.image(post.mainImage).width(600).height(400).url()
+          ? builder.image(post.mainImage).width(600).url()
           : "/file.svg";
 
         return (
-          <motion.div
+          <article
             key={post._id}
-            variants={{
-              hidden: { opacity: 0, y: 30 },
-              visible: { opacity: 1, y: 0, transition: { duration: 0.4 } }
-            }}
+            className="group relative flex h-full flex-col border-2 border-ink bg-paper-bright transition-colors hover:bg-paper-warm"
           >
-            <article 
-              className="bg-white dark:bg-black border-4 border-black dark:border-white rounded-none shadow-brutal-lg dark:shadow-brutal-dark flex flex-col h-full transition-all hover:-translate-y-2 hover:shadow-[12px_12px_0px_0px_rgba(0,0,0,1)] dark:hover:shadow-[12px_12px_0px_0px_rgba(255,255,255,1)] group"
-            >
-              <div className="relative w-full aspect-[16/9] border-b-4 border-black dark:border-white overflow-hidden bg-accent">
-                <Image
-                  src={imageUrl}
-                  alt={post.title || "Blog post"}
-                  fill
-                  className="object-cover grayscale group-hover:grayscale-0 transition-all duration-300"
-                />
-                <div className="absolute top-4 left-4 bg-primary px-3 py-1 border-2 border-black font-bold text-xs uppercase text-black">
-                  {post.publishedAt ? formatMMYY(post.publishedAt) : "RECENT"}
-                </div>
-              </div>
+            <div className="relative h-[176px] overflow-hidden border-b-2 border-ink bg-paper">
+              <Image
+                src={imageUrl}
+                alt={post.title || "Blog post"}
+                fill
+                sizes="(max-width: 600px) 100vw, 50vw"
+                className="object-cover object-top grayscale contrast-[1.04] mix-blend-multiply transition-transform duration-500 ease-out group-hover:scale-[1.03]"
+              />
+              <span className="absolute left-2.5 top-2.5 border-2 border-ink bg-paper-bright/85 px-2 py-0.5 font-gothic text-[10px] font-black uppercase tracking-[0.14em] text-stamp">
+                {post.publishedAt ? formatMMYY(post.publishedAt) : "Recent"}
+              </span>
+            </div>
 
-              <div className="p-6 flex flex-col flex-grow gap-3">
-                <h2 className="text-2xl font-black uppercase tracking-tight leading-tight text-black dark:text-white">
-                  <Link href={`/blog/${post.slug.current}`} className="hover:underline">
-                    {post.title}
-                  </Link>
-                </h2>
-                <p className="text-sm font-medium text-black/80 dark:text-white/80 line-clamp-3 leading-relaxed flex-grow">
-                  {post.description || "Click details to read the full comprehensive breakdown of this topic."}
-                </p>
-                
-                <div className="pt-4 mt-auto">
-                  <Link
-                    href={`/blog/${post.slug.current}`}
-                    className="inline-block w-full text-center py-2 bg-accent text-black font-black text-sm uppercase border-2 border-black shadow-brutal active:translate-x-[2px] active:translate-y-[2px] active:shadow-none transition-all"
-                  >
-                    READ ARTICLE →
-                  </Link>
-                </div>
+            <div className="flex flex-1 flex-col gap-3 p-5">
+              <span className="font-gothic text-[11px] font-extrabold uppercase tracking-[0.14em] text-ink">
+                From the Archive
+              </span>
+              <h2 className="font-display text-[24px] font-normal leading-[1.1] tracking-[-0.01em] text-ink">
+                <Link href={`/blog/${post.slug.current}`} className="link-pencil">
+                  {post.title}
+                </Link>
+              </h2>
+              <p className="line-clamp-3 flex-1 font-text text-[14px] leading-[1.55] text-ink-soft">
+                {post.description ||
+                  "Click through to read the full article from the archive."}
+              </p>
+
+              <div className="mt-auto flex items-center justify-between gap-3 border-t border-ink/25 pt-3.5">
+                <span className="font-mono text-xs text-ink-soft">
+                  {post.publishedAt ? formatMMYY(post.publishedAt) : "—"}
+                </span>
+                <Link
+                  href={`/blog/${post.slug.current}`}
+                  className="group/link inline-flex items-center gap-1.5 border-b-[1.5px] border-stamp pb-0.5 font-gothic text-xs font-bold uppercase tracking-[0.08em] text-stamp"
+                >
+                  Read the piece{" "}
+                  <span className="transition-transform duration-150 group-hover/link:translate-x-1">
+                    →
+                  </span>
+                </Link>
               </div>
-            </article>
-          </motion.div>
+            </div>
+          </article>
         );
       })}
-    </motion.div>
+    </div>
   );
 }

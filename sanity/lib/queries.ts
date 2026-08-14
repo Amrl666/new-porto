@@ -74,6 +74,24 @@ export const getProjects = groq`*[_type == "project"] | order(order asc)[]{
     url
 }`;
 
+export const getHomeProjects = groq`*[_type == "project"] | order(order asc)[]{
+    _id,
+    title,
+    company,
+    slug,
+    description,
+    image,
+    gif,
+    publishedAt,
+    url,
+    "stack": stack[]->{
+        _id,
+        title,
+        description,
+        image
+    }
+}`;
+
 export const getOtherProjects = groq`*[_type=="project" && slug.current!=$slug] | order(order asc)[0...3]{
     _id,
     title,

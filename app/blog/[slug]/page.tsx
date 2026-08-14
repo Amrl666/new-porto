@@ -8,7 +8,6 @@ import { formatMMYY } from "@/lib/utils";
 import { PortableText } from "@portabletext/react";
 import Navbar from "@/components/shared/navbar";
 import Footer from "@/components/shared/footer";
-import ScrollReveal from "@/components/ui/scroll-reveal";
 
 const builder = imageUrlBuilder(client);
 
@@ -38,67 +37,74 @@ export default async function PostDetailPage({ params }: Props) {
   }
 
   const mainImageUrl = post.mainImage
-    ? builder.image(post.mainImage).width(1200).height(600).url()
+    ? builder.image(post.mainImage).width(1200).url()
     : null;
 
   return (
-    <div className="min-h-screen flex flex-col">
+    <div className="flex min-h-screen flex-col bg-paper">
       <Navbar />
-      <main className="flex-grow py-12 px-4 max-w-3xl mx-auto w-full pt-24">
-        <ScrollReveal delay={0}>
+      <main className="mx-auto w-full max-w-[1180px] flex-grow px-5 pb-[76px] sm:px-[30px]">
+        <div className="mb-[30px] pt-[30px]">
+          <div className="mb-[18px] flex items-center justify-between gap-4 border-b border-ink/25 pb-[9px] font-gothic text-[11px] font-bold uppercase tracking-[0.16em] text-ink-soft">
+            <span>From the Archive</span>
+            <span>
+              {post.publishedAt ? formatMMYY(post.publishedAt) : "—"}
+            </span>
+          </div>
+
           <Link
             href="/blog"
-            className="inline-block mb-8 px-4 py-2 bg-white text-black font-black text-sm uppercase border-2 border-black shadow-brutal active:translate-x-[2px] active:translate-y-[2px] active:shadow-none transition-all dark:bg-black dark:text-white dark:border-white"
+            className="group inline-flex items-center gap-1.5 border-b-[1.5px] border-ink pb-0.5 font-gothic text-xs font-bold uppercase tracking-[0.08em] text-ink"
           >
-            ← BACK TO ARCHIVE
+            <span className="transition-transform duration-150 group-hover:-translate-x-1">
+              ←
+            </span>{" "}
+            Back to the archive
           </Link>
-        </ScrollReveal>
+
+          <h1 className="mt-5 max-w-[20ch] font-display text-[clamp(36px,6vw,72px)] font-normal leading-[1.02] tracking-[-0.015em]">
+            {post.title}
+          </h1>
+          <div className="rv rv-rule mt-5 h-1 bg-ink" />
+        </div>
 
         <article className="flex flex-col gap-8">
-          <ScrollReveal delay={0.1}>
-            <header className="border-b-4 border-black dark:border-white pb-6 flex flex-col gap-4">
-              <div className="w-fit bg-primary px-3 py-1 border-2 border-black font-bold text-sm uppercase text-black">
-                Published: {post.publishedAt ? formatMMYY(post.publishedAt) : "UNKNOWN"}
-              </div>
-              <h1 className="text-4xl md:text-5xl lg:text-6xl font-black uppercase tracking-tight leading-none text-black dark:text-white">
-                {post.title}
-              </h1>
-            </header>
-          </ScrollReveal>
-
           {mainImageUrl && (
-            <ScrollReveal delay={0.2}>
-              <div className="border-4 border-black dark:border-white p-2 bg-white dark:bg-black shadow-brutal-lg">
-                <div className="relative w-full aspect-video border-2 border-black">
+            <div className="rv rv-develop">
+              <div className="relative border border-ink/25 bg-paper-bright p-2 pb-0 shadow-[0_2px_14px_rgba(22,20,15,0.14)]">
+                <span
+                  aria-hidden="true"
+                  className="absolute -top-2 left-1/2 z-[1] h-4 w-16 -translate-x-1/2 -rotate-2 border border-ink/10 bg-paper-deep/75"
+                />
+                <div className="relative aspect-video overflow-hidden border border-ink/40 bg-paper">
                   <Image
                     src={mainImageUrl}
                     alt={post.title || "Blog post"}
                     fill
-                    className="object-cover"
                     priority
+                    sizes="(max-width: 940px) 100vw, 1100px"
+                    className="object-cover object-top grayscale contrast-[1.04] mix-blend-multiply"
                   />
                 </div>
               </div>
-            </ScrollReveal>
+            </div>
           )}
 
           {post.description && (
-            <ScrollReveal delay={0.3}>
-              <div className="border-4 border-black dark:border-white bg-accent/20 p-6 shadow-brutal font-bold text-base md:text-lg border-l-[12px] text-black dark:text-white">
-                <span className="bg-accent text-black px-2 py-0.5 border border-black text-xs uppercase inline-block mb-2">TL;DR</span>
-                <p>{post.description}</p>
-              </div>
-            </ScrollReveal>
+            <div className="rv rv-settle border-l-4 border-ink pl-[18px]">
+              <p className="font-text text-[clamp(18px,2vw,23px)] italic leading-[1.45] text-ink-soft">
+                {post.description}
+              </p>
+            </div>
           )}
 
-          <ScrollReveal delay={0.4}>
-            <div className="prose prose-lg dark:prose-invert max-w-none font-medium leading-relaxed text-black dark:text-white pt-4
-              prose-headings:font-black prose-headings:uppercase prose-headings:tracking-tight
-              prose-h2:border-b-4 prose-h2:border-black dark:prose-h2:border-white prose-h2:pb-2
-              prose-strong:font-black prose-a:text-primary prose-a:underline font-sans">
-              {post?.body ? <PortableText value={post.body} /> : null}
-            </div>
-          </ScrollReveal>
+          <div className="rv rv-settle mx-auto w-full max-w-[680px] font-text text-[17px] leading-[1.7] text-ink [hyphens:auto] [text-align:justify]">
+            {post?.body ? (
+              <div className="prose prose-neutral max-w-none [&_h1]:font-display [&_h2]:font-display [&_h3]:font-display [&_a]:text-stamp [&_a]:underline">
+                <PortableText value={post.body} />
+              </div>
+            ) : null}
+          </div>
         </article>
       </main>
       <Footer />

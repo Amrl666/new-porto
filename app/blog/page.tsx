@@ -23,24 +23,30 @@ export default async function BlogPage() {
   const posts = await getPosts();
 
   return (
-    <div className="min-h-screen flex flex-col">
+    <div className="flex min-h-screen flex-col bg-paper">
       <Navbar />
-      <main className="flex-grow py-16 px-4 max-w-5xl mx-auto w-full pt-24">
-        {/* Header Blog */}
-        <div className="mb-16 text-center md:text-left">
-          <div className="inline-block bg-secondary px-6 py-3 border-4 border-black dark:border-white shadow-brutal-lg dark:shadow-brutal-dark rotate-1 mb-4">
-            <h1 className="text-4xl md:text-6xl font-black uppercase tracking-tighter text-black">
-              THE ARCHIVE
-            </h1>
+      <main className="mx-auto w-full max-w-[1180px] flex-grow px-5 pb-[76px] sm:px-[30px]">
+        <div className="mb-[30px] pt-[30px]">
+          <div className="mb-[18px] flex items-center justify-between gap-4 border-b border-ink/25 pb-[9px] font-gothic text-[11px] font-bold uppercase tracking-[0.16em] text-ink-soft">
+            <span>The Archive</span>
+            <span>Filed under: Field Notes</span>
           </div>
-          <p className="text-lg md:text-xl font-bold border-l-4 border-black dark:border-white pl-4 max-w-xl mt-4">
-            Writing about technical architectures, software engineering, and things I learn along the way.
+          <span className="block font-gothic text-xs font-bold uppercase tracking-[0.18em] text-ink">
+            Field Notes
+          </span>
+          <h1 className="mt-1.5 font-display text-[clamp(30px,4vw,46px)] font-normal leading-[1.02] tracking-[-0.015em]">
+            The Archive
+          </h1>
+          <p className="mt-3 max-w-[42ch] font-text text-[15px] leading-[1.55] text-ink-soft">
+            Writing about technical architectures, software engineering, data
+            science and things learned along the way.
           </p>
+          <div className="rv rv-rule mt-5 h-1 bg-ink" />
         </div>
 
         {posts.length === 0 ? (
-          <div className="border-4 border-dashed border-black dark:border-white p-12 text-center bg-white dark:bg-black">
-            <p className="text-xl font-black uppercase">No articles published yet.</p>
+          <div className="border-2 border-dashed border-ink p-12 text-center">
+            <p className="font-display text-[28px]">No articles published yet.</p>
           </div>
         ) : (
           <BlogGrid posts={posts} />

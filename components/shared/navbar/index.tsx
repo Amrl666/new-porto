@@ -1,112 +1,264 @@
 "use client";
+
 import { useState } from "react";
 import Link from "next/link";
 import { usePathname } from "next/navigation";
 import { cn } from "@/lib/utils";
-import { ThemeToggle } from "@/components/shared/theme-toggle";
-import { Button } from "@/components/ui/button";
-import useSWR from "swr";
-import { getUserInfo } from "@/sanity/lib/queries";
-import { fetcher } from "@/sanity/lib/client";
-import { UserInfo } from "@/sanity/lib/types/userInfo";
+
+const NAV_LINKS = [
+  { name: "Work", href: "#work" },
+  { name: "Stack", href: "#stack" },
+  { name: "Contact", href: "#contact" },
+];
 
 export default function Navbar() {
-  const pathname = usePathname();
   const [mobileOpen, setMobileOpen] = useState(false);
-  const { data: userInfo } = useSWR<UserInfo>(getUserInfo, fetcher);
+  const pathname = usePathname();
+  const isHome = pathname === "/";
 
-  const navItems = [
-    { name: "Home", path: "/" },
-    { name: "Projects", path: "/projects" },
-    { name: "Blog", path: "/blog" },
-    { name: "Stack", path: "/stack" },
-    { name: "Guestbook", path: "/guestbook" },
-  ];
+  /**
+   * Scrolls to an in-page anchor reliably (native browsers sometimes
+   * skip the jump when the hash is already in the URL, and next/link
+   * doesn't always trigger a scroll on the same page).
+   */
+  const scrollTo = (href: string) => {
+    if (!isHome) return; // cross-page links navigate normally
+    const id = href.replace("#", "");
+    const el = document.getElementById(id);
+    if (el) {
+      el.scrollIntoView({ behavior: "smooth", block: "start" });
+    }
+  };
+
+  const renderLink = (link: { name: string; href: string }) =>
+    isHome ? (
+      <a
+        key={link.name}
+        href={link.href}
+        onClick={(e) => {
+          e.preventDefault();
+          scrollTo(link.href);
+        }}
+        className="cursor-pointer border-b-2 border-transparent pb-0.5 font-gothic text-xs font-semibold uppercase tracking-[0.12em] text-ink transition-colors duration-150 hover:border-ink"
+      >
+        {link.name}
+      </a>
+    ) : (
+      <Link
+        key={link.name}
+        href={`/${link.href}`}
+        className="cursor-pointer border-b-2 border-transparent pb-0.5 font-gothic text-xs font-semibold uppercase tracking-[0.12em] text-ink transition-colors duration-150 hover:border-ink"
+      >
+        {link.name}
+      </Link>
+    );
+
+  const hireHref = isHome ? "#contact" : "/#contact";
 
   return (
-    <header className="sticky top-0 z-50 w-full border-b-4 border-black bg-white dark:bg-black dark:border-white transition-colors duration-300">
-      <div className="container mx-auto px-4 h-16 flex items-center justify-between">
-        <Link 
-          href="/" 
-          className="text-2xl font-black uppercase tracking-tighter hover:-translate-y-1 transition-transform bg-primary px-3 py-1 border-2 border-black shadow-brutal dark:border-white dark:shadow-brutal-dark"
-        >
-          AMRL.
-        </Link>
+    <div
+      className="nav-wrap sticky top-0 z-40 border-b-2 border-ink bg-paper"
+      style={{ viewTransitionName: "site-header" }}
+    >
+      <div className="mx-auto max-w-[1180px] px-5 sm:px-[30px]">
+        <nav className="flex min-h-[50px] items-center justify-between gap-[18px] py-[9px]">
+          <Link
+            href="/"
+            className="cursor-pointer whitespace-nowrap select-none font-display text-[22px] font-normal tracking-[-0.01em] text-ink"
+          >
+            Amirul Mabruri
+          </Link>
 
-        <nav className="hidden md:flex items-center gap-4">
-          {navItems.map((item) => {
-            const isActive = pathname === item.path;
-            return (
-              <Link
-                key={item.path}
-                href={item.path}
-                className={cn(
-                  "px-4 py-2 font-bold text-sm uppercase border-2 border-transparent transition-all",
-                  isActive 
-                    ? "bg-accent border-black shadow-brutal dark:border-white dark:shadow-brutal-dark dark:text-black" 
-                    : "hover:border-black hover:shadow-brutal hover:-translate-y-1 dark:hover:border-white dark:hover:shadow-brutal-dark"
-                )}
+          <div className="hidden items-center gap-[26px] min-[940px]:flex">
+            {NAV_LINKS.map(renderLink)}
+            {isHome ? (
+              <a
+                href={hireHref}
+                onClick={(e) => {
+                  e.preventDefault();
+                  scrollTo(hireHref);
+                }}
+                className="inline-flex cursor-pointer items-center gap-2.5 whitespace-nowrap border-2 border-ink bg-ink px-[15px] py-2 font-gothic text-[11.5px] font-bold uppercase tracking-[0.1em] text-paper transition-colors duration-150 hover:bg-transparent hover:text-ink"
               >
-                {item.name}
+                Hire him
+              </a>
+            ) : (
+              <Link
+                href={hireHref}
+                className="inline-flex cursor-pointer items-center gap-2.5 whitespace-nowrap border-2 border-ink bg-ink px-[15px] py-2 font-gothic text-[11.5px] font-bold uppercase tracking-[0.1em] text-paper transition-colors duration-150 hover:bg-transparent hover:text-ink"
+              >
+                Hire him
               </Link>
-            );
-          })}
+            )}
+          </div>
 
-          <div className="ml-4 border-l-4 border-black dark:border-white pl-4">
-            <ThemeToggle />
+          <div className="flex items-center gap-3 min-[940px]:hidden">
+            <span className="hidden min-[460px]:inline-flex">
+              {isHome ? (
+                <a
+                  href={hireHref}
+                  onClick={(e) => {
+                    e.preventDefault();
+                    scrollTo(hireHref);
+                  }}
+                  className="inline-flex cursor-pointer items-center gap-2.5 whitespace-nowrap border-2 border-ink bg-ink px-[15px] py-2 font-gothic text-[11.5px] font-bold uppercase tracking-[0.1em] text-paper transition-colors duration-150 hover:bg-transparent hover:text-ink"
+                >
+                  Hire him
+                </a>
+              ) : (
+                <Link
+                  href={hireHref}
+                  className="inline-flex cursor-pointer items-center gap-2.5 whitespace-nowrap border-2 border-ink bg-ink px-[15px] py-2 font-gothic text-[11.5px] font-bold uppercase tracking-[0.1em] text-paper transition-colors duration-150 hover:bg-transparent hover:text-ink"
+                >
+                  Hire him
+                </Link>
+              )}
+            </span>
+            <button
+              type="button"
+              aria-label="Open menu"
+              aria-expanded={mobileOpen}
+              onClick={() => setMobileOpen((v) => !v)}
+              className="flex h-[42px] w-[42px] flex-none flex-col items-center justify-center gap-[5px] border-2 border-ink"
+            >
+              <span
+                className={cn(
+                  "h-0.5 w-5 bg-ink transition-transform duration-200",
+                  mobileOpen && "translate-y-[7px] rotate-45"
+                )}
+              />
+              <span
+                className={cn(
+                  "h-0.5 w-5 bg-ink transition-opacity duration-150",
+                  mobileOpen && "opacity-0"
+                )}
+              />
+              <span
+                className={cn(
+                  "h-0.5 w-5 bg-ink transition-transform duration-200",
+                  mobileOpen && "-translate-y-[7px] -rotate-45"
+                )}
+              />
+            </button>
           </div>
         </nav>
 
-        <div className="md:hidden flex items-center gap-2">
-          <ThemeToggle />
-          <Button 
-            variant="outline" 
-            size="icon" 
-            className="md:hidden"
-            onClick={() => setMobileOpen(!mobileOpen)}
-          >
-            <span className="font-black text-xl">{mobileOpen ? "✕" : "≡"}</span>
-          </Button>
-        </div>
-      </div>
-
-      {/* Mobile Menu */}
-      {mobileOpen && (
-        <div className="md:hidden border-t-4 border-black dark:border-white bg-white dark:bg-black">
-          <div className="container mx-auto px-4 py-4 flex flex-col gap-2">
-            {navItems.map((item) => {
-              const isActive = pathname === item.path;
-              return (
-                <Link
-                  key={item.path}
-                  href={item.path}
-                  onClick={() => setMobileOpen(false)}
-                  className={cn(
-                    "px-4 py-3 font-bold text-sm uppercase border-2 transition-all",
-                    isActive 
-                      ? "bg-accent border-black shadow-brutal dark:border-white dark:shadow-brutal-dark dark:text-black" 
-                      : "border-transparent hover:border-black hover:shadow-brutal dark:hover:border-white dark:hover:shadow-brutal-dark"
-                  )}
+        <div
+          aria-hidden={!mobileOpen}
+          className={cn(
+            "overflow-hidden transition-all duration-200 min-[940px]:hidden",
+            mobileOpen ? "pointer-events-auto max-h-[600px] opacity-100" : "pointer-events-none max-h-0 opacity-0"
+          )}
+        >
+          <div className="border-t-2 border-ink pb-4 pt-1.5">
+            {NAV_LINKS.map((link) => (
+              <a
+                key={link.name}
+                href={isHome ? link.href : `/${link.href}`}
+                onClick={() => {
+                  setMobileOpen(false);
+                  if (isHome) {
+                    const id = link.href.replace("#", "");
+                    // Delay so the panel collapses first
+                    setTimeout(() => {
+                      document.getElementById(id)?.scrollIntoView({ behavior: "smooth", block: "start" });
+                    }, 80);
+                  }
+                }}
+                className="flex items-center justify-between border-b border-ink/25 px-0.5 py-[15px] font-display text-[30px] font-normal tracking-[-0.01em] text-ink"
+              >
+                <span>{link.name}</span>
+                <ArrowUpRightIcon />
+              </a>
+            ))}
+            <div className="mt-[18px]">
+              {isHome ? (
+                <a
+                  href={hireHref}
+                  onClick={() => {
+                    setMobileOpen(false);
+                    setTimeout(() => {
+                      document.getElementById("contact")?.scrollIntoView({ behavior: "smooth", block: "start" });
+                    }, 80);
+                  }}
+                  className="inline-flex cursor-pointer items-center gap-2.5 whitespace-nowrap border-2 border-ink bg-ink px-[22px] py-3 font-gothic text-[13px] font-bold uppercase tracking-[0.1em] text-paper transition-colors duration-150 hover:bg-transparent hover:text-ink"
                 >
-                  {item.name}
-                </Link>
-              );
-            })}
-            <div className="flex gap-2 pt-2 border-t-2 border-black dark:border-white mt-2">
-              {userInfo?.githubUrl && (
-                <Link href={userInfo.githubUrl} target="_blank" className="font-bold text-xs uppercase border-2 border-black px-3 py-2 shadow-brutal hover:shadow-none hover:translate-x-[2px] hover:translate-y-[2px] transition-all dark:border-white dark:shadow-brutal-dark">
-                  GitHub
-                </Link>
-              )}
-              {userInfo?.linkedInUrl && (
-                <Link href={userInfo.linkedInUrl} target="_blank" className="font-bold text-xs uppercase border-2 border-black px-3 py-2 shadow-brutal hover:shadow-none hover:translate-x-[2px] hover:translate-y-[2px] transition-all dark:border-white dark:shadow-brutal-dark">
-                  LinkedIn
+                  Hire him →
+                </a>
+              ) : (
+                <Link
+                  href={hireHref}
+                  onClick={() => setMobileOpen(false)}
+                  className="inline-flex cursor-pointer items-center gap-2.5 whitespace-nowrap border-2 border-ink bg-ink px-[22px] py-3 font-gothic text-[13px] font-bold uppercase tracking-[0.1em] text-paper transition-colors duration-150 hover:bg-transparent hover:text-ink"
+                >
+                  Hire him →
                 </Link>
               )}
             </div>
+            <div className="mt-4 flex flex-wrap gap-x-[18px] gap-y-2 font-gothic text-[11px] font-semibold uppercase tracking-[0.1em] text-ink-soft">
+              <span className="inline-flex items-center gap-[7px]">
+                <MapPinIcon />
+                Jakarta, ID
+              </span>
+              <span className="inline-flex items-center gap-[7px]">
+                <GithubIcon />
+                <a
+                  href="https://github.com/Amrl666"
+                  target="_blank"
+                  rel="noopener noreferrer"
+                >
+                  github.com/Amrl666
+                </a>
+              </span>
+            </div>
           </div>
         </div>
-      )}
-    </header>
+      </div>
+    </div>
+  );
+}
+
+function ArrowUpRightIcon() {
+  return (
+    <svg
+      xmlns="http://www.w3.org/2000/svg"
+      width="1em"
+      height="1em"
+      fill="currentColor"
+      viewBox="0 0 256 256"
+      className="h-[18px] w-[18px] text-ink-soft"
+    >
+      <path d="M204,64V168a12,12,0,0,1-24,0V93L72.49,200.49a12,12,0,0,1-17-17L163,76H88a12,12,0,0,1,0-24H192A12,12,0,0,1,204,64Z" />
+    </svg>
+  );
+}
+
+function MapPinIcon() {
+  return (
+    <svg
+      xmlns="http://www.w3.org/2000/svg"
+      width="1em"
+      height="1em"
+      fill="currentColor"
+      viewBox="0 0 256 256"
+      className="h-3.5 w-3.5"
+    >
+      <path d="M128,16a88.1,88.1,0,0,0-88,88c0,75.3,80,132.17,83.41,134.55a8,8,0,0,0,9.18,0C136,236.17,216,179.3,216,104A88.1,88.1,0,0,0,128,16Zm0,56a32,32,0,1,1-32,32A32,32,0,0,1,128,72Z" />
+    </svg>
+  );
+}
+
+function GithubIcon() {
+  return (
+    <svg
+      xmlns="http://www.w3.org/2000/svg"
+      width="1em"
+      height="1em"
+      fill="currentColor"
+      viewBox="0 0 256 256"
+      className="h-3.5 w-3.5"
+    >
+      <path d="M212.62,75.17A63.7,63.7,0,0,0,206.39,26,12,12,0,0,0,196,20a63.71,63.71,0,0,0-50,24H126A63.71,63.71,0,0,0,76,20a12,12,0,0,0-10.39,6,63.7,63.7,0,0,0-6.23,49.17A61.5,61.5,0,0,0,52,104v8a60.1,60.1,0,0,0,45.76,58.28A43.66,43.66,0,0,0,92,192v4H76a20,20,0,0,1-20-20,44.05,44.05,0,0,0-44-44,12,12,0,0,0,0,24,20,20,0,0,1,20,20,44.05,44.05,0,0,0,44,44H92v12a12,12,0,0,0,24,0V192a20,20,0,0,1,40,0v40a12,12,0,0,0,24,0V192a43.66,43.66,0,0,0-5.76-21.72A60.1,60.1,0,0,0,220,112v-8A61.5,61.5,0,0,0,212.62,75.17ZM196,112a36,36,0,0,1-36,36H112a36,36,0,0,1-36-36v-8a37.87,37.87,0,0,1,6.13-20.12,11.65,11.65,0,0,0,1.58-11.49,39.9,39.9,0,0,1-.4-27.72,39.87,39.87,0,0,1,26.41,17.8A12,12,0,0,0,119.82,68h32.35a12,12,0,0,0,10.11-5.53,39.84,39.84,0,0,1,26.41-17.8,39.9,39.9,0,0,1-.4,27.72,12,12,0,0,0,1.61,11.53A37.85,37.85,0,0,1,196,104Z" />
+    </svg>
   );
 }

@@ -1,9 +1,7 @@
 'use client';
 
 import { useOptimistic, useRef, useState, useTransition, useEffect, FormEvent } from 'react';
-import { motion } from 'framer-motion';
 import { addMessage, deleteMessage } from '@/app/actions';
-import { Button } from '@/components/ui/button';
 
 interface Message {
   _id?: string;
@@ -96,21 +94,19 @@ export function Guestbook({ initialMessages }: GuestbookProps) {
   };
 
   return (
-    <div className="max-w-2xl mx-auto px-4 py-12 flex flex-col gap-12">
+    <div className="mx-auto flex max-w-[820px] flex-col gap-12">
       {/* Form Section */}
-      <motion.div 
-        className="border-4 border-black dark:border-white p-6 bg-white dark:bg-black shadow-brutal-lg"
-        initial={{ opacity: 0, y: 30 }}
-        whileInView={{ opacity: 1, y: 0 }}
-        viewport={{ once: true }}
-        transition={{ duration: 0.5 }}
-      >
-        <h3 className="text-2xl font-black uppercase mb-4 text-black dark:text-white">Sign the Guestbook</h3>
-        
-        <form ref={formRef} onSubmit={handleSubmit} className="flex flex-col gap-4">
+      <div className="border-2 border-ink bg-paper-bright">
+        <h3 className="border-b-2 border-ink px-5 py-[11px] font-gothic text-[11px] font-bold uppercase tracking-[0.12em] text-ink">
+          Sign the Guestbook
+        </h3>
+
+        <form ref={formRef} onSubmit={handleSubmit} className="flex flex-col gap-4 p-5">
           <div className="flex flex-col gap-1.5">
-            <label className="text-sm font-black uppercase text-black dark:text-white">Your Name</label>
-            <input 
+            <label className="mb-[7px] block font-gothic text-[11px] font-bold uppercase tracking-[0.12em] text-ink-soft">
+              Your Name
+            </label>
+            <input
               ref={inputRef}
               name="name"
               type="text"
@@ -118,13 +114,15 @@ export function Guestbook({ initialMessages }: GuestbookProps) {
               maxLength={50}
               required
               disabled={isPending}
-              className="w-full bg-white text-black font-bold p-3 border-4 border-black focus:outline-none focus:bg-primary/10 rounded-none placeholder:text-gray-400"
+              className="w-full border-2 border-ink bg-paper px-3.5 py-3 font-text text-[16px] text-ink placeholder:text-ink-faint focus:outline-none"
             />
           </div>
 
           <div className="flex flex-col gap-1.5">
-            <label className="text-sm font-black uppercase text-black dark:text-white">Message</label>
-            <textarea 
+            <label className="mb-[7px] block font-gothic text-[11px] font-bold uppercase tracking-[0.12em] text-ink-soft">
+              Message
+            </label>
+            <textarea
               name="message"
               rows={3}
               maxLength={140}
@@ -132,23 +130,32 @@ export function Guestbook({ initialMessages }: GuestbookProps) {
               disabled={isPending}
               onChange={(e) => setMessageLength(e.target.value.length)}
               placeholder="Leave a public architectural feedback or just say hello..."
-              className="w-full bg-white text-black font-bold p-3 border-4 border-black focus:outline-none focus:bg-primary/10 rounded-none placeholder:text-gray-400"
+              className="w-full resize-y border-2 border-ink bg-paper px-3.5 py-3 font-text text-[16px] leading-[1.5] text-ink placeholder:text-ink-faint focus:outline-none"
             />
-            <div className="text-right text-xs font-bold text-gray-500">
+            <div className="text-right font-mono text-[11px] text-ink-soft">
               {messageLength}/140
             </div>
           </div>
 
-          <Button type="submit" size="lg" disabled={isPending} className="bg-primary text-black font-black uppercase w-full">
-            {isPending ? 'SENDING...' : 'SUBMIT SIGNATURE →'}
-          </Button>
+          <div className="mt-[22px] flex flex-wrap items-center justify-between gap-4">
+            <span className="font-gothic text-[11px] uppercase tracking-[0.06em] text-ink-soft">
+              Usually replies never — it&rsquo;s a guestbook
+            </span>
+            <button
+              type="submit"
+              disabled={isPending}
+              className="inline-flex cursor-pointer items-center gap-2.5 whitespace-nowrap border-2 border-ink bg-ink px-7 py-[15px] font-gothic text-[14px] font-bold uppercase tracking-[0.1em] text-paper transition-colors duration-150 hover:bg-transparent hover:text-ink disabled:opacity-60"
+            >
+              {isPending ? 'Signing…' : 'Sign the book →'}
+            </button>
+          </div>
         </form>
 
         {/* Admin Mode */}
-        <div className="mt-4 pt-4 border-t-2 border-black dark:border-white">
+        <div className="border-t-2 border-ink/25 px-5 py-4">
           <button
             onClick={() => setShowAdminInput(!showAdminInput)}
-            className="text-xs font-bold uppercase underline text-black dark:text-white"
+            className="font-gothic text-[11px] font-bold uppercase tracking-[0.1em] text-ink-soft underline"
           >
             {showAdminInput ? 'Hide Admin' : 'Admin Mode'}
           </button>
@@ -158,28 +165,24 @@ export function Guestbook({ initialMessages }: GuestbookProps) {
               placeholder="Enter admin key..."
               value={adminKey}
               onChange={(e) => setAdminKey(e.target.value)}
-              className="w-full bg-white text-black font-bold p-2 border-2 border-black mt-2 focus:outline-none rounded-none placeholder:text-gray-400 text-sm"
+              className="mt-2 w-full border-2 border-ink bg-paper px-3.5 py-2 font-text text-[14px] text-ink placeholder:text-ink-faint focus:outline-none"
             />
           )}
         </div>
-      </motion.div>
+      </div>
 
       {/* Message Feed List */}
-      <motion.div 
-        className="flex flex-col gap-6"
-        initial={{ opacity: 0 }}
-        whileInView={{ opacity: 1 }}
-        viewport={{ once: true, margin: "-50px" }}
-        transition={{ duration: 0.3 }}
-      >
-        <h4 className="text-xl font-black uppercase border-b-4 border-black dark:border-white pb-2 w-fit text-black dark:text-white">
+      <div className="flex flex-col gap-6">
+        <h4 className="w-fit border-b-2 border-ink pb-2 font-display text-[26px] font-normal text-ink">
           Recent Signatures ({optimisticMessages.length})
         </h4>
 
         {optimisticMessages.length === 0 ? (
-          <div className="border-4 border-dashed border-black dark:border-white p-12 text-center">
-            <p className="text-lg font-black uppercase text-black dark:text-white">No messages yet</p>
-            <p className="text-sm font-bold text-black/60 dark:text-white/60 mt-2">Be the first to say something nice!</p>
+          <div className="border-2 border-dashed border-ink p-12 text-center">
+            <p className="font-display text-[28px] text-ink">No messages yet</p>
+            <p className="mt-2 font-text text-[14px] text-ink-soft">
+              Be the first to say something nice!
+            </p>
           </div>
         ) : (
           <div className="flex flex-col gap-4">
@@ -190,46 +193,40 @@ export function Guestbook({ initialMessages }: GuestbookProps) {
               return (
                 <div key={msg._id || `temp-${idx}`}>
                   {showDate && (
-                    <div className="text-xs font-bold text-gray-500 uppercase mb-2 mt-4 bg-primary/20 border-2 border-black dark:border-white px-3 py-1 w-fit">
+                    <div className="mb-2 mt-4 w-fit border-2 border-ink bg-paper-deep/75 px-3 py-1 font-gothic text-[10px] font-bold uppercase tracking-[0.14em] text-ink">
                       {formatDate(msg.createdAt)}
                     </div>
                   )}
-                  <motion.div 
-                    className="border-4 border-black dark:border-white p-4 bg-white dark:bg-black shadow-brutal flex flex-col gap-1 group"
-                    initial={{ opacity: 0, y: 20 }}
-                    whileInView={{ opacity: 1, y: 0 }}
-                    viewport={{ once: true }}
-                    transition={{ duration: 0.4, delay: idx * 0.05 }}
-                  >
-                    <div className="flex justify-between items-center border-b-2 border-black dark:border-white pb-1 mb-2">
-                      <span className="font-black text-base uppercase text-white bg-black px-2 py-0.5 dark:bg-white dark:text-black">
+                  <div className="flex flex-col gap-1 border-2 border-ink bg-paper-bright p-4 transition-colors hover:bg-paper-warm">
+                    <div className="mb-2 flex items-center justify-between border-b-2 border-ink/25 pb-1">
+                      <span className="font-gothic text-[11px] font-extrabold uppercase tracking-[0.12em] text-ink">
                         {msg.name}
                       </span>
                       <div className="flex items-center gap-2">
-                        <span className="text-xs font-bold text-gray-500 uppercase">
+                        <span className="font-mono text-[11px] uppercase text-ink-soft">
                           {new Date(msg.createdAt).toLocaleTimeString('id-ID', { hour: '2-digit', minute: '2-digit' })}
                         </span>
                         {adminKey && msg._id && (
                           <button
                             onClick={() => handleDelete(msg._id!)}
                             disabled={deletingId === msg._id}
-                            className="text-xs font-black text-destructive border border-destructive px-1 hover:bg-destructive hover:text-white transition-colors"
+                            className="border border-stamp px-1 font-gothic text-[11px] font-black text-stamp transition-colors hover:bg-stamp hover:text-paper"
                           >
                             X
                           </button>
                         )}
                       </div>
                     </div>
-                    <p className="text-sm font-medium leading-relaxed text-black dark:text-white">
+                    <p className="font-text text-[15px] leading-[1.55] text-ink">
                       {msg.message}
                     </p>
-                  </motion.div>
+                  </div>
                 </div>
               );
             })}
           </div>
         )}
-      </motion.div>
+      </div>
     </div>
   );
 }

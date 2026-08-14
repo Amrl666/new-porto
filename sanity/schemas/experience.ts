@@ -26,6 +26,12 @@ export default defineType({
       type: 'date'
     }),
     defineField({
+      name: 'endDate',
+      title: 'End Date',
+      description: 'Leave empty if this is still ongoing',
+      type: 'date'
+    }),
+    defineField({
       name: 'summary',
       title: 'Summary',
       type: 'string'

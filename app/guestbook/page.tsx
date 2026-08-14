@@ -38,24 +38,28 @@ export default async function GuestbookPage() {
   const messages = await getMessages();
 
   return (
-    <div className="min-h-screen flex flex-col">
+    <div className="flex min-h-screen flex-col bg-paper">
       <Navbar />
 
-      <main className="flex-grow pt-24 pb-12 px-4 sm:px-6 lg:px-8">
-        <div className="max-w-3xl mx-auto">
-          <div className="mb-10 text-center md:text-left">
-            <div className="inline-block bg-secondary px-6 py-3 border-4 border-black dark:border-white shadow-brutal-lg dark:shadow-brutal-dark rotate-1 mb-4">
-              <h1 className="text-4xl md:text-6xl font-black uppercase tracking-tighter text-black">
-                GUESTBOOK
-              </h1>
-            </div>
-            <p className="text-lg md:text-xl font-bold border-l-4 border-black dark:border-white pl-4 max-w-xl mt-4">
-              Join the conversation! Leave a message and say hello.
-            </p>
+      <main className="mx-auto w-full max-w-[1180px] flex-grow px-5 pb-[76px] sm:px-[30px]">
+        <div className="mb-[30px] pt-[30px]">
+          <div className="mb-[18px] flex items-center justify-between gap-4 border-b border-ink/25 pb-[9px] font-gothic text-[11px] font-bold uppercase tracking-[0.16em] text-ink-soft">
+            <span>The Guestbook</span>
+            <span>Filed under: Correspondence</span>
           </div>
-
-          <Guestbook initialMessages={messages} />
+          <span className="block font-gothic text-xs font-bold uppercase tracking-[0.18em] text-ink">
+            Correspondence
+          </span>
+          <h1 className="mt-1.5 font-display text-[clamp(30px,4vw,46px)] font-normal leading-[1.02] tracking-[-0.015em]">
+            The Guestbook
+          </h1>
+          <p className="mt-3 max-w-[42ch] font-text text-[15px] leading-[1.55] text-ink-soft">
+            Join the conversation — leave a message and say hello.
+          </p>
+          <div className="rv rv-rule mt-5 h-1 bg-ink" />
         </div>
+
+        <Guestbook initialMessages={messages} />
       </main>
 
       <Footer />

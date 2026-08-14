@@ -1,5 +1,3 @@
-"use client";
-
 import Link from "next/link";
 import Image from "next/image";
 import { Project } from "@/sanity/lib/types/project";
@@ -13,70 +11,72 @@ interface Props {
 }
 
 export default function ProjectCard({ project }: Props) {
-  const imageUrl = project.image 
-    ? builder.image(project.image).width(600).height(400).url() 
+  const imageUrl = project.image
+    ? builder.image(project.image).width(600).url()
     : "/file.svg";
+  const year = project.publishedAt
+    ? new Date(project.publishedAt).getFullYear()
+    : null;
 
   return (
-    <div className="bg-white dark:bg-black border-4 border-black dark:border-white rounded-none shadow-brutal-lg dark:shadow-brutal-dark transition-all hover:-translate-y-2 hover:shadow-[12px_12px_0px_0px_rgba(0,0,0,1)] dark:hover:shadow-[12px_12px_0px_0px_rgba(255,255,255,1)] flex flex-col h-full group">
-      {/* Gambar Project */}
-      <div className="relative w-full aspect-video border-b-4 border-black dark:border-white bg-accent overflow-hidden">
+    <article className="group relative flex h-full flex-col border-2 border-ink bg-paper-bright transition-colors hover:bg-paper-warm">
+      {/* Image */}
+      <div className="relative h-[176px] overflow-hidden border-b-2 border-ink bg-paper">
         <Image
           src={imageUrl}
           alt={project.title}
           fill
-          className="object-cover grayscale group-hover:grayscale-0 transition-all duration-300 scale-100 group-hover:scale-105"
+          sizes="(max-width: 600px) 100vw, (max-width: 940px) 50vw, 360px"
+          className="object-cover object-top grayscale contrast-[1.04] mix-blend-multiply transition-transform duration-500 ease-out group-hover:scale-[1.03]"
         />
+        <span
+          aria-hidden="true"
+          className="pointer-events-none absolute right-2.5 top-2.5 rotate-[8deg] scale-150 border-[3px] border-stamp bg-paper-bright/85 px-2.5 py-1 font-gothic text-[11px] font-black uppercase tracking-[0.18em] text-stamp opacity-0 transition-all duration-200 ease-out [filter:url(#fm-rough)] group-hover:-rotate-[8deg] group-hover:scale-100 group-hover:opacity-100"
+        >
+          Confirmed
+        </span>
       </div>
 
-      {/* Konten Teks */}
-      <div className="p-6 flex flex-col flex-grow gap-4">
-        <h3 className="text-2xl font-black uppercase tracking-tight text-black dark:text-white">
+      {/* Content */}
+      <div className="flex flex-1 flex-col gap-3 p-5">
+        <span className="font-gothic text-[11px] font-extrabold uppercase tracking-[0.14em] text-ink">
+          {project.company || "Selected Work"}
+        </span>
+        <h3 className="font-display text-[24px] font-normal leading-[1.1] tracking-[-0.01em] text-ink">
           {project.title}
         </h3>
-        
-        <p className="text-sm font-medium text-black/80 dark:text-white/80 line-clamp-3 leading-relaxed flex-grow">
+        <p className="line-clamp-3 flex-1 font-text text-[14px] leading-[1.55] text-ink-soft">
           {project.description}
         </p>
 
-        {/* Tech Stack Badges */}
-        {project.stack && (
-          <div className="flex flex-wrap gap-2 pt-2">
-            {project.stack.map((tech: any) => (
-              <span 
-                key={tech._id || tech.title} 
-                className="px-2 py-1 text-xs font-bold uppercase bg-secondary text-black border-2 border-black dark:border-white rounded-none shadow-brutal-sm"
+        {project.stack && project.stack.length > 0 && (
+          <div className="flex flex-wrap gap-1.5 pt-1">
+            {project.stack.slice(0, 4).map((tech: any) => (
+              <span
+                key={tech._id || tech.title}
+                className="inline-flex items-center gap-1.5 border border-ink px-2.5 py-[3px] font-mono text-[11px] font-medium text-ink"
               >
                 {tech.title}
               </span>
             ))}
           </div>
         )}
-      </div>
 
-      {/* Tombol Aksi */}
-      <div className="border-t-4 border-black dark:border-white p-4 bg-gray-50 dark:bg-zinc-900 grid grid-cols-2 gap-2">
-        <Link
-          href={`/projects/${project.slug.current}`}
-          className="text-center py-2 bg-primary text-black font-black text-xs uppercase border-2 border-black shadow-brutal active:translate-x-[2px] active:translate-y-[2px] active:shadow-none transition-all"
-        >
-          DETAILS →
-        </Link>
-        {project.url ? (
-          <a
-            href={project.url}
-            target="_blank"
-            rel="noreferrer"
-            className="text-center py-2 bg-accent text-black font-black text-xs uppercase border-2 border-black shadow-brutal active:translate-x-[2px] active:translate-y-[2px] active:shadow-none transition-all"
-          >
-            LIVE DEMO
-          </a>
-        ) : (
-          <span className="text-center py-2 bg-gray-200 text-gray-500 font-bold text-xs uppercase border-2 border-gray-300 cursor-not-allowed">
-            NO DEMO
+        <div className="mt-auto flex items-center justify-between gap-3 border-t border-ink/25 pt-3.5">
+          <span className="font-mono text-xs text-ink-soft">
+            {year ? `${year}` : "2024"}
           </span>
-        )}
+          <Link
+            href={`/projects/${project.slug.current}`}
+            className="group/link inline-flex items-center gap-1.5 border-b-[1.5px] border-stamp pb-0.5 font-gothic text-xs font-bold uppercase tracking-[0.08em] text-stamp"
+          >
+            Open case file{" "}
+            <span className="transition-transform duration-150 group-hover/link:translate-x-1">
+              →
+            </span>
+          </Link>
+        </div>
       </div>
-    </div>
+    </article>
   );
 }

@@ -1,18 +1,45 @@
 import type { Metadata } from "next";
 import "./globals.css";
-import { Inter as FontSans } from "next/font/google";
+import { Libre_Caslon_Display, Libre_Caslon_Text, Libre_Franklin, JetBrains_Mono } from "next/font/google";
 import { cn } from "@/lib/utils";
 import { Toaster } from "@/components/ui/toaster";
+import IntroOverlay from "@/components/shared/intro-overlay";
+import CursorMagnifier from "@/components/shared/cursor-magnifier";
+import RoughFilter from "@/components/shared/rough-filter";
+import RevealSystem from "@/components/shared/reveal";
 import { Providers } from "./providers";
 
-const fontSans = FontSans({
+const caslonDisplay = Libre_Caslon_Display({
   subsets: ["latin"],
-  variable: "--font-sans",
+  weight: "400",
+  variable: "--font-caslon-display",
+  display: "swap",
+});
+
+const caslonText = Libre_Caslon_Text({
+  subsets: ["latin"],
+  weight: ["400", "700"],
+  style: ["normal", "italic"],
+  variable: "--font-caslon-text",
+  display: "swap",
+});
+
+const franklin = Libre_Franklin({
+  subsets: ["latin"],
+  variable: "--font-franklin",
+  display: "swap",
+});
+
+const jetbrainsMono = JetBrains_Mono({
+  subsets: ["latin"],
+  variable: "--font-jetbrains",
+  display: "swap",
 });
 
 export const metadata: Metadata = {
-  title: "Amirul | Home",
-  description: "Hi, I'm an IT Enthusiast with a passion for learning and growing across all IT fields. With a strong drive and dedication to building fast, reliable, and modern applications, I continuously expand my skills and knowledge. With a history of contributions to projects in both corporate and freelance capacities, I have developed strong collaboration and communication skills, along with an innovative and adaptable approach that allows me to perform well under pressure. I'm always looking for new ways to learn and improve, exploring innovations in open-source space and beyond.",
+  title: "Amirul Mabruri | The Personal Record of an IT Enthusiast",
+  description:
+    "Amirul Mabruri is an IT enthusiast in Jakarta, Indonesia — exploring software engineering, data science, machine learning and everything in between. This broadsheet is the personal record of his work.",
   icons: {
     icon: "/logo A.ico",
   },
@@ -24,20 +51,27 @@ export default function RootLayout({
   children: React.ReactNode;
 }) {
   return (
-    <html lang="en" suppressHydrationWarning={true}>
+    <html
+      lang="en"
+      data-scroll-behavior="smooth"
+      suppressHydrationWarning={true}
+      className={cn(
+        caslonDisplay.variable,
+        caslonText.variable,
+        franklin.variable,
+        jetbrainsMono.variable
+      )}
+    >
       <body
         suppressHydrationWarning={true}
-        className={cn(
-          "min-h-screen font-sans antialiased relative selection:bg-primary selection:text-black",
-          fontSans.variable
-        )}
+        className="min-h-screen bg-paper font-text text-ink antialiased relative selection:bg-stamp selection:text-paper-bright"
       >
         <Providers>
-          <div className="fixed inset-0 -z-10 pattern-dots pattern-black pattern-bg-background pattern-size-4 pattern-opacity-10 dark:pattern-white dark:pattern-opacity-10" />
-          
-          <div className="relative z-10">
-            {children}
-          </div>
+          <RevealSystem />
+          <div className="relative z-[1] [overflow-x:clip]">{children}</div>
+          <IntroOverlay />
+          <CursorMagnifier />
+          <RoughFilter />
           <Toaster />
         </Providers>
       </body>

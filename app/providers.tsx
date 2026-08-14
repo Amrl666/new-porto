@@ -6,7 +6,8 @@ import { EasterEggHandler } from '@/components/ui/easter-egg-handler';
 
 export function Providers({ children }: { children: ReactNode }) {
   return (
-    <ThemeProvider attribute="class" defaultTheme="light" enableSystem>
+    // The broadsheet is a light paper edition - no dark mode.
+    <ThemeProvider attribute="class" defaultTheme="light" forcedTheme="light">
       <EasterEggHandler />
       {children}
     </ThemeProvider>

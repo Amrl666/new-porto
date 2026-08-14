@@ -53,6 +53,28 @@ const config: Config = {
           DEFAULT: 'hsl(var(--card))',
           foreground: 'hsl(var(--card-foreground))',
         },
+        // The Broadsheet palette
+        paper: {
+          DEFAULT: '#f4f1e9',
+          warm: '#efeadd',
+          deep: '#e7e0cf',
+          bright: '#fbfaf5',
+        },
+        ink: {
+          DEFAULT: '#16140f',
+          soft: '#45413a',
+          faint: '#8b8678',
+        },
+        stamp: {
+          DEFAULT: '#a6382c',
+          bright: '#c9503f',
+        },
+      },
+      fontFamily: {
+        display: ['var(--font-caslon-display)', '"Times New Roman"', 'Georgia', 'serif'],
+        text: ['var(--font-caslon-text)', 'Georgia', '"Times New Roman"', 'serif'],
+        gothic: ['var(--font-franklin)', '"Helvetica Neue"', 'Arial', 'sans-serif'],
+        mono: ['var(--font-jetbrains)', 'ui-monospace', '"SFMono-Regular"', 'monospace'],
       },
       borderRadius: {
         lg: 'var(--radius)',

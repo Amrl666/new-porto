@@ -2,121 +2,15 @@
 import Navbar from "@/components/shared/navbar";
 import React from "react";
 import Footer from "@/components/shared/footer";
-import * as z from "zod";
-import { zodResolver } from "@hookform/resolvers/zod";
-import { useForm } from "react-hook-form";
-import {
-  Form,
-  FormField,
-  FormItem,
-  FormLabel,
-  FormControl,
-  FormMessage,
-} from "@/components/ui/form";
-import { Input } from "@/components/ui/input";
-import { Button } from "@/components/ui/button";
-import { Textarea } from "@/components/ui/textarea";
-import { sendEmail } from "./action";
-import { useToast } from "@/components/ui/use-toast";
-
-const formSchema = z.object({
-  name: z.string().min(2, "This field is required.").max(50),
-  email: z.string().email("Please enter valid email address."),
-  subject: z.string().min(2, "This field is required.").max(50),
-  message: z.string().min(5, "This field is required.").max(200),
-});
-
-const defaultValues = {
-  name: "",
-  subject: "",
-  message: "",
-  email: "",
-};
+import Letters from "@/components/home/letters";
 
 function Contact() {
-  const form = useForm<z.infer<typeof formSchema>>({
-    resolver: zodResolver(formSchema),
-    defaultValues: defaultValues,
-  });
-
-  const { toast } = useToast();
-
-  async function onSubmit(values: z.infer<typeof formSchema>) {
-    sendEmail(values);
-    form.reset(defaultValues);
-    toast({
-      description: "Form Submitted Successfully!",
-    });
-  }
-
   return (
-    <div className="w-full min-h-screen pb-5">
+    <div className="flex min-h-screen w-full flex-col bg-paper">
       <Navbar />
-      <div className="w-full h-full pt-20 min-h-screen px-4 sm:px-6">
-        <div className="max-w-2xl mx-auto shadow-2xl rounded-xl mt-10 p-4 sm:p-6 md:p-8 gap-5 bg-card/50 backdrop-blur-sm border border-border">
-          <h1 className="mb-5 text-2xl font-semibold">Contact Form</h1>
-          <Form {...form}>
-            <form onSubmit={form.handleSubmit(onSubmit)} className="space-y-8">
-              <FormField
-                control={form.control}
-                name="name"
-                render={({ field }) => (
-                  <FormItem>
-                    <FormLabel>Name</FormLabel>
-                    <FormControl>
-                      <Input placeholder="John Doe" {...field} />
-                    </FormControl>
-                    <FormMessage />
-                  </FormItem>
-                )}
-              />
-              <FormField
-                control={form.control}
-                name="email"
-                render={({ field }) => (
-                  <FormItem>
-                    <FormLabel>Email</FormLabel>
-                    <FormControl>
-                      <Input placeholder="you@provider.com" {...field} />
-                    </FormControl>
-                    <FormMessage />
-                  </FormItem>
-                )}
-              />
-              <FormField
-                control={form.control}
-                name="subject"
-                render={({ field }) => (
-                  <FormItem>
-                    <FormLabel>Subject</FormLabel>
-                    <FormControl>
-                      <Input placeholder="Web Application" {...field} />
-                    </FormControl>
-                    <FormMessage />
-                  </FormItem>
-                )}
-              />
-              <FormField
-                control={form.control}
-                name="message"
-                render={({ field }) => (
-                  <FormItem>
-                    <FormLabel>Message</FormLabel>
-                    <FormControl>
-                      <Textarea
-                        placeholder="Hello, I would like to propose..."
-                        {...field}
-                      />
-                    </FormControl>
-                    <FormMessage />
-                  </FormItem>
-                )}
-              />
-              <Button type="submit">Submit</Button>
-            </form>
-          </Form>
-        </div>
-      </div>
+      <main className="w-full flex-grow">
+        <Letters />
+      </main>
       <Footer />
     </div>
   );

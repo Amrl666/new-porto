@@ -8,7 +8,6 @@ import ImageSwiper from "@/components/projects/image-swiper";
 import { PortableText } from "@portabletext/react";
 import Navbar from "@/components/shared/navbar";
 import Footer from "@/components/shared/footer";
-import ScrollReveal from "@/components/ui/scroll-reveal";
 
 const builder = imageUrlBuilder(client);
 
@@ -55,120 +54,186 @@ export default async function ProjectDetailPage({ params }: Props) {
   }
 
   const mainImageUrl = project.image
-    ? builder.image(project.image).width(1200).height(600).url()
+    ? builder.image(project.image).width(1200).url()
     : null;
+  const year = project.publishedAt
+    ? new Date(project.publishedAt).getFullYear()
+    : null;
+  const domain = project.url
+    ? project.url.replace(/^https?:\/\/(www\.)?/, "")
+    : project.company;
 
   return (
-    <div className="min-h-screen flex flex-col">
+    <div className="min-h-screen bg-paper font-text text-ink">
       <Navbar />
-      <main className="flex-grow py-12 px-4 max-w-4xl mx-auto w-full pt-24">
-        <ScrollReveal delay={0}>
+      <main className="mx-auto w-full max-w-[1180px] px-5 pb-[76px] sm:px-[30px]">
+        {/* Case file header */}
+        <div className="mb-[30px] pt-[30px]">
+          <div className="mb-[18px] flex items-center justify-between gap-4 border-b border-ink/25 pb-[9px] font-gothic text-[11px] font-bold uppercase tracking-[0.16em] text-ink-soft">
+            <span>Case File</span>
+            <span>Filed under: Selected Works</span>
+          </div>
+
           <Link
-            href="/projects"
-            className="inline-block mb-8 px-4 py-2 bg-white text-black font-black text-sm uppercase border-2 border-black shadow-brutal active:translate-x-[2px] active:translate-y-[2px] active:shadow-none transition-all dark:bg-black dark:text-white dark:border-white"
+            href="/#work"
+            className="group inline-flex items-center gap-1.5 border-b-[1.5px] border-ink pb-0.5 font-gothic text-xs font-bold uppercase tracking-[0.08em] text-ink"
           >
-            ← BACK TO PROJECTS
+            <span className="transition-transform duration-150 group-hover:-translate-x-1">
+              ←
+            </span>{" "}
+            Back to the evidence
           </Link>
-        </ScrollReveal>
 
-      <article className="flex flex-col gap-8">
-        {/* Judul Utama */}
-        <ScrollReveal delay={0.1}>
-          <header className="border-b-4 border-black dark:border-white pb-6">
-            <h1 className="text-4xl md:text-6xl font-black uppercase tracking-tight text-black dark:text-white leading-none mb-4">
-              {project.title}
-            </h1>
-            <p className="text-lg md:text-xl font-bold text-muted-foreground uppercase tracking-wide">
-              {project.description}
-            </p>
-          </header>
-        </ScrollReveal>
+          <span className="mt-5 block font-gothic text-xs font-bold uppercase tracking-[0.18em] text-stamp">
+            Exhibit on record
+          </span>
+          <span className="mt-3 block font-gothic text-[11px] font-extrabold uppercase tracking-[0.14em] text-ink">
+            {project.company || "Selected Work"}
+            {year ? ` · ${year}` : ""}
+          </span>
+          <h1 className="mt-2 font-display text-[clamp(36px,6vw,72px)] font-normal leading-[1.02] tracking-[-0.015em]">
+            {project.title}
+          </h1>
+          <div className="rv rv-rule mt-5 h-1 bg-ink" />
+        </div>
 
-        {/* Media / Gambar Utama */}
-        <ScrollReveal delay={0.2}>
-          <div className="border-4 border-black dark:border-white bg-white dark:bg-black shadow-brutal-lg dark:shadow-brutal-dark overflow-hidden p-2">
-            {project.gallery && project.gallery.length > 0 ? (
-              <ImageSwiper images={project.gallery} />
-            ) : (
-              mainImageUrl && (
-                <div className="relative w-full aspect-video border-2 border-black">
+        <article className="flex flex-col gap-8">
+          {/* Media */}
+          <div className="rv rv-develop">
+            <div className="relative border border-ink/25 bg-paper-bright p-2 pb-0 shadow-[0_2px_14px_rgba(22,20,15,0.14)]">
+              <span
+                aria-hidden="true"
+                className="absolute -top-2 left-1/2 z-[1] h-4 w-16 -translate-x-1/2 -rotate-2 border border-ink/10 bg-paper-deep/75"
+              />
+              <div className="relative aspect-video overflow-hidden border border-ink/40 bg-paper">
+                {project.gallery && project.gallery.length > 0 ? (
+                  <ImageSwiper
+                    images={project.gallery}
+                    fallbackAlt={project.title}
+                  />
+                ) : mainImageUrl ? (
                   <Image
                     src={mainImageUrl}
                     alt={project.title}
                     fill
-                    className="object-cover"
                     priority
+                    sizes="(max-width: 940px) 100vw, 1100px"
+                    className="object-cover object-top grayscale contrast-[1.04] mix-blend-multiply"
                   />
-                </div>
-              )
-            )}
-          </div>
-        </ScrollReveal>
-
-        {/* Informasi & Spesifikasi — sidebar kiri, overview ngisi sisa */}
-        <div className="flex flex-col md:flex-row gap-8 items-start mt-4">
-          
-          {/* Kolom Kiri: Detail & Tautan Teknis */}
-          <div className="w-full md:w-64 md:shrink-0 flex flex-col gap-6">
-            
-            {/* Box Tautan */}
-            <ScrollReveal delay={0.3}>
-              <div className="border-4 border-black dark:border-white p-4 bg-secondary text-black flex flex-col gap-3 shadow-brutal">
-                <h3 className="font-black uppercase text-lg border-b-2 border-black pb-1">LINKS</h3>
-                {project.url && (
-                  <a
-                    href={project.url}
-                    target="_blank"
-                    rel="noreferrer"
-                    className="font-bold text-sm uppercase underline hover:text-white transition-colors"
-                  >
-                    🌐 Live Production
-                  </a>
-                )}
-                {!project.url && (
-                  <p className="text-xs font-bold uppercase text-black/60">Repository is Private</p>
+                ) : (
+                  <div className="flex h-full min-h-[240px] items-center justify-center font-gothic text-[11px] font-semibold uppercase tracking-[0.2em] text-ink-soft">
+                    No photograph on record
+                  </div>
                 )}
               </div>
-            </ScrollReveal>
-
-            {/* Box Tech Stack */}
-            <ScrollReveal delay={0.35}>
-              <div className="border-4 border-black dark:border-white p-4 bg-accent text-black flex flex-col gap-2 shadow-brutal">
-                <h3 className="font-black uppercase text-lg border-b-2 border-black pb-1">BUILT WITH</h3>
-                <div className="flex flex-wrap gap-2 pt-2">
-                  {project.stack?.map((tech: any) => (
-                    <span
-                      key={tech._id}
-                      className="px-2 py-1 bg-white text-black text-xs font-black uppercase border-2 border-black"
+              <div className="flex items-center justify-between gap-3 px-1 py-1.5 font-mono text-[11px] tracking-[0.02em] text-ink-soft">
+                <span className="relative shrink-0 font-bold uppercase text-ink">
+                  Exhibit · {project.slug.current}
+                </span>
+                <span className="truncate">
+                  {project.url ? (
+                    <a
+                      href={project.url}
+                      target="_blank"
+                      rel="noopener noreferrer"
+                      className="link-pencil"
                     >
-                      {tech.title}
-                    </span>
-                  ))}
-                </div>
+                      {domain}
+                    </a>
+                  ) : (
+                    <>recovered from the archive</>
+                  )}
+                </span>
               </div>
-            </ScrollReveal>
+            </div>
           </div>
 
-          {/* Kolom Kanan: Deskripsi Panjang — ngisi sisa width */}
-          <ScrollReveal delay={0.4}>
-            <div className="flex-1 border-4 border-black dark:border-white p-6 md:p-8 bg-white dark:bg-black shadow-brutal flex flex-col gap-4">
-              <h3 className="text-2xl font-black uppercase bg-primary text-black w-fit px-3 py-1 border-2 border-black -rotate-1">
-                PROJECT OVERVIEW
-              </h3>
+          <div className="grid grid-cols-1 items-start gap-8 min-[940px]:grid-cols-[1.55fr_1fr]">
+            {/* Body */}
+            <div className="rv rv-settle font-text text-[17px] leading-[1.6]">
+              <p className="mb-4 border-l-4 border-ink pl-[18px] font-text text-[clamp(18px,2vw,23px)] italic leading-[1.45] text-ink-soft">
+                {project.description}
+              </p>
               {project.body ? (
-                <div className="prose dark:prose-invert max-w-none font-medium leading-relaxed pt-2 text-black dark:text-white">
+                <div className="max-w-none [hyphens:auto] [text-align:justify]">
                   <PortableText value={project.body} />
                 </div>
               ) : (
-                <p className="whitespace-pre-line font-medium text-black dark:text-white pt-2">
-                  {project.description}
-                </p>
+                <p className="text-ink-soft">{project.description}</p>
               )}
             </div>
-          </ScrollReveal>
 
-        </div>
-      </article>
+            {/* Sidebar */}
+            <aside className="rv rv-settle flex flex-col gap-6">
+              {/* Links */}
+              <div className="border-2 border-ink bg-paper-bright">
+                <h3 className="border-b-2 border-ink px-4 py-[11px] font-gothic text-[11px] font-bold uppercase tracking-[0.12em] text-ink">
+                  Links
+                </h3>
+                <div className="flex flex-col gap-3 px-4 py-4">
+                  {project.url ? (
+                    <a
+                      href={project.url}
+                      target="_blank"
+                      rel="noopener noreferrer"
+                      className="link-pencil w-fit font-text text-[15px] text-ink"
+                    >
+                      Live production →
+                    </a>
+                  ) : (
+                    <p className="font-gothic text-[11px] font-semibold uppercase tracking-[0.1em] text-ink-soft">
+                      Repository &amp; link pending
+                    </p>
+                  )}
+                </div>
+              </div>
+
+              {/* Stack */}
+              {project.stack && project.stack.length > 0 && (
+                <div className="border-2 border-ink bg-paper-bright">
+                  <h3 className="border-b-2 border-ink px-4 py-[11px] font-gothic text-[11px] font-bold uppercase tracking-[0.12em] text-ink">
+                    Built with
+                  </h3>
+                  <div className="flex flex-wrap gap-1.5 px-4 py-4">
+                    {project.stack.map((tech) => (
+                      <span
+                        key={tech._id}
+                        className="inline-flex items-center gap-1.5 border border-ink bg-transparent px-2.5 py-[3px] font-mono text-[11px] font-medium text-ink"
+                      >
+                        {tech.title}
+                      </span>
+                    ))}
+                  </div>
+                </div>
+              )}
+
+              {/* Meta */}
+              <div className="border-2 border-ink bg-paper-warm">
+                <h3 className="border-b-2 border-ink px-4 py-[11px] font-gothic text-[11px] font-bold uppercase tracking-[0.12em] text-ink">
+                  Docket
+                </h3>
+                <div className="flex flex-col gap-2 px-4 py-4 font-mono text-[12px] text-ink-soft">
+                  <span>
+                    Filed:{" "}
+                    <b className="font-bold text-ink">
+                      {year ? `${year}` : "2024"}
+                    </b>
+                  </span>
+                  <span>
+                    Client:{" "}
+                    <b className="font-bold text-ink">
+                      {project.company || "—"}
+                    </b>
+                  </span>
+                  <span>
+                    Status:{" "}
+                    <b className="font-bold text-ink">On the record</b>
+                  </span>
+                </div>
+              </div>
+            </aside>
+          </div>
+        </article>
       </main>
       <Footer />
     </div>
