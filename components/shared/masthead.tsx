@@ -1,10 +1,8 @@
+import DateLine from "./date-line";
+
 export default function Masthead() {
-  const today = new Date().toLocaleDateString("en-GB", {
-    weekday: "long",
-    day: "numeric",
-    month: "long",
-    year: "numeric",
-  });
+  const d = new Date();
+  const today = `${d.toLocaleDateString("en-GB", { weekday: "long" })} ${d.getDate()} ${d.toLocaleDateString("en-GB", { month: "long" })} ${d.getFullYear()}`;
 
   return (
     <header className="bg-paper pt-[18px]">
@@ -24,12 +22,7 @@ export default function Masthead() {
 
         <div className="mt-1 flex flex-wrap items-center justify-center gap-x-[22px] gap-y-1 border-y-2 border-ink py-[7px] font-gothic text-[11px] font-semibold uppercase tracking-[0.14em] text-ink-soft">
           <span>
-            <span className="relative whitespace-nowrap">
-              <span className="text-transparent">{today}</span>
-              <span className="absolute inset-0" aria-hidden="true">
-                {today}
-              </span>
-            </span>
+            <DateLine text={today} />
           </span>
           <span className="h-[3px] w-[3px] rounded-full bg-ink-soft" />
           <span>Vol. I</span>

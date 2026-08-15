@@ -26,7 +26,10 @@ export default function Navbar() {
     const id = href.replace("#", "");
     const el = document.getElementById(id);
     if (el) {
-      el.scrollIntoView({ behavior: "smooth", block: "start" });
+      // "auto" picks up CSS scroll-behavior: smooth on desktop, but stays
+      // instant on touch devices (smooth programmatic scroll + sticky
+      // header jitters on mobile browsers).
+      el.scrollIntoView({ behavior: "auto", block: "start" });
     }
   };
 
@@ -161,7 +164,7 @@ export default function Navbar() {
                     const id = link.href.replace("#", "");
                     // Delay so the panel collapses first
                     setTimeout(() => {
-                      document.getElementById(id)?.scrollIntoView({ behavior: "smooth", block: "start" });
+                      document.getElementById(id)?.scrollIntoView({ behavior: "auto", block: "start" });
                     }, 80);
                   }
                 }}
@@ -178,7 +181,7 @@ export default function Navbar() {
                   onClick={() => {
                     setMobileOpen(false);
                     setTimeout(() => {
-                      document.getElementById("contact")?.scrollIntoView({ behavior: "smooth", block: "start" });
+                      document.getElementById("contact")?.scrollIntoView({ behavior: "auto", block: "start" });
                     }, 80);
                   }}
                   className="inline-flex cursor-pointer items-center gap-2.5 whitespace-nowrap border-2 border-ink bg-ink px-[22px] py-3 font-gothic text-[13px] font-bold uppercase tracking-[0.1em] text-paper transition-colors duration-150 hover:bg-transparent hover:text-ink"

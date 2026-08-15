@@ -3,6 +3,27 @@
 import { useEffect } from "react";
 import { usePathname } from "next/navigation";
 
+let observer: IntersectionObserver | null = null;
+
+/**
+ * Shared observer — mirrors the reference site: any `.rv` element that
+ * intersects gets `.is-revealed` and is then unobserved.
+ */
+function observe(el: HTMLElement) {
+  observer ??= new IntersectionObserver(
+    (entries) => {
+      for (const entry of entries) {
+        if (entry.isIntersecting) {
+          entry.target.classList.add("is-revealed");
+          observer?.unobserve(entry.target);
+        }
+      }
+    },
+    { threshold: 0.15, rootMargin: "0px 0px -10% 0px" }
+  );
+  observer.observe(el);
+}
+
 /**
  * Enables the rv-* reveal system from the reference site.
  *
@@ -10,6 +31,11 @@ import { usePathname } from "next/navigation";
  * transitions kick in — content is visible by default without JS),
  * then an IntersectionObserver adds `.is-revealed` to every `.rv`
  * element as it enters the viewport.
+ *
+ * If the intro overlay (`.fm-intro`) is on screen, reveals are held
+ * back until it dispatches `rt-intro-done` — so the page's entrance
+ * animations play *after* the newspaper lifts away, exactly like
+ * roberttran.com.au — and only then are elements observed.
  *
  * Re-runs on every route change so elements on freshly navigated
  * pages (project/blog detail pages, etc.) are observed too.
@@ -32,22 +58,23 @@ export default function RevealSystem() {
       return;
     }
 
-    const observer = new IntersectionObserver(
-      (entries) => {
-        entries.forEach((entry) => {
-          if (entry.isIntersecting) {
-            entry.target.classList.add("is-revealed");
-            observer.unobserve(entry.target);
-          }
-        });
-      },
-      { threshold: 0.12, rootMargin: "0px 0px -6% 0px" }
-    );
+    // Wait for the intro to finish before starting the entrance
+    // animations. If the intro isn't on screen, reveal immediately.
+    if (document.querySelector(".fm-intro") === null) {
+      targets.forEach(observe);
+      return;
+    }
 
-    targets.forEach((el) => observer.observe(el));
-    return () => {
-      observer.disconnect();
+    let released = false;
+    const release = () => {
+      if (released) return;
+      released = true;
+      targets.forEach(observe);
+      window.removeEventListener("rt-intro-done", release);
     };
+    window.addEventListener("rt-intro-done", release);
+
+    return () => window.removeEventListener("rt-intro-done", release);
   }, [pathname]);
 
   return null;
