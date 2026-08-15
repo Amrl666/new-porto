@@ -53,7 +53,7 @@ export default function FrontPage({ userInfo }: Props) {
               style={{ ["--rv-delay" as string]: "200ms" }}
             >
               By <b className="text-ink">The Investigation Desk</b> ·{" "}
-              Reporting from Jakarta, between EXC Studio and the capital
+              Reporting from Jakarta — on assignment at EXC Studio
             </p>
             <div
               className="rv rv-settle mt-[22px] flex flex-wrap gap-3"
@@ -65,12 +65,16 @@ export default function FrontPage({ userInfo }: Props) {
               >
                 Read the work →
               </a>
-              <a
-                className="inline-flex cursor-pointer items-center gap-2.5 whitespace-nowrap border-2 border-ink bg-transparent px-7 py-[15px] font-gothic text-[14px] font-bold uppercase tracking-[0.1em] text-ink transition-colors duration-150 hover:bg-ink hover:text-paper"
-                href="#contact"
-              >
-                Get in touch
-              </a>
+              {userInfo?.cv?.url && (
+                <a
+                  className="inline-flex cursor-pointer items-center gap-2.5 whitespace-nowrap border-2 border-ink bg-transparent px-7 py-[15px] font-gothic text-[14px] font-bold uppercase tracking-[0.1em] text-ink transition-colors duration-150 hover:bg-ink hover:text-paper"
+                  href={userInfo.cv.url}
+                  target="_blank"
+                  rel="noopener noreferrer"
+                >
+                  Get in touch
+                </a>
+              )}
             </div>
 
             {/* Stats strip */}

@@ -88,7 +88,7 @@ export default function Footer() {
 
         <div className="mt-8 flex flex-col items-center gap-4 border-t border-paper/30 pt-5 font-gothic text-[11px] font-medium uppercase tracking-[0.1em] text-paper/70 min-[600px]:flex-row min-[600px]:justify-between">
           <span>
-            © 2026 The Amirul Times · All rights reserved · Printed in Yogyakarta
+            © 2026 The Amirul Times · All rights reserved · Printed in Jakarta
           </span>
           <div className="flex gap-2.5">
             <a

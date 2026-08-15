@@ -153,6 +153,7 @@ export const getExperienceInformation = groq`
   location,
   startDate,
   endDate,
+  workType,
   summary,
 } | order(startDate desc)
 `;

@@ -32,6 +32,20 @@ export default defineType({
       type: 'date'
     }),
     defineField({
+      name: 'workType',
+      title: 'Work Type',
+      type: 'string',
+      options: {
+        list: [
+          { title: 'WFO (Work From Office)', value: 'WFO' },
+          { title: 'WFA (Work From Anywhere)', value: 'WFA' },
+          { title: 'Freelance', value: 'Freelance' },
+          { title: 'Remote', value: 'Remote' },
+          { title: 'Hybrid', value: 'Hybrid' }
+        ]
+      }
+    }),
+    defineField({
       name: 'summary',
       title: 'Summary',
       type: 'string'

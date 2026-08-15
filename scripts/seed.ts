@@ -122,6 +122,7 @@ async function seed() {
       position: 'Frontend Engineer',
       location: 'Jakarta, Indonesia',
       startDate: '2022-01-01',
+      workType: 'WFO',
       summary: 'Membangun dan maintain aplikasi web dengan Next.js, React, dan TypeScript. Bekerja dalam tim agile untuk mengembangkan fitur-fitur baru dan meningkatkan performa aplikasi.',
     })
     await client.create({
@@ -130,6 +131,7 @@ async function seed() {
       position: 'Full Stack Developer',
       location: 'Remote',
       startDate: '2021-06-01',
+      workType: 'Freelance',
       summary: 'Mengembangkan berbagai proyek web untuk klien lokal dan internasional. Menangani full-stack development dari frontend hingga backend.',
     })
     console.log('Experience entries created')

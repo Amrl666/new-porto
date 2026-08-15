@@ -131,10 +131,17 @@ function ExperienceTimeline({ experience }: Props) {
                   activeIndex === idx ? "-translate-y-2" : ""
                 }`}
               >
-                <time className="inline-block mb-3 px-3 py-1 bg-accent border-2 border-black dark:border-white text-sm font-bold uppercase text-black">
-                  {formatMMYY(exp.startDate)} —{" "}
-                  {exp.endDate ? formatMMYY(exp.endDate) : "PRESENT"}
-                </time>
+                <div className="mb-3 flex flex-col items-start gap-2">
+                  <time className="inline-block px-3 py-1 bg-accent border-2 border-black dark:border-white text-sm font-bold uppercase text-black">
+                    {formatMMYY(exp.startDate)} —{" "}
+                    {exp.endDate ? formatMMYY(exp.endDate) : "PRESENT"}
+                  </time>
+                  {exp.workType && (
+                    <span className="border-2 border-black dark:border-white px-2 py-0.5 text-xs font-bold uppercase text-black dark:text-white">
+                      {exp.workType}
+                    </span>
+                  )}
+                </div>
 
                 <h3 className="text-2xl font-black uppercase text-black dark:text-white mb-1">
                   {exp.position}

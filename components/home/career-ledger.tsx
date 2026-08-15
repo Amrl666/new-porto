@@ -48,10 +48,15 @@ export default function CareerLedger({ experience }: Props) {
               className="rv rv-settle grid grid-cols-1 items-baseline gap-1.5 border-b border-ink/25 px-1 py-[22px] min-[600px]:grid-cols-[170px_1fr_0.9fr] min-[600px]:gap-6"
               style={{ ["--rv-delay" as string]: `${i * 120}ms` }}
             >
-              <div className="font-mono text-[13px] text-ink-soft">
+              <div className="flex flex-col items-start gap-1.5 font-mono text-[13px] text-ink-soft">
                 <span className="rv-stampchild">
                   {formatRange(item.startDate, item.endDate)}
                 </span>
+                {item.workType && (
+                  <span className="rv-stampchild w-fit border border-ink/40 px-1.5 py-0.5 font-gothic text-[10px] font-bold uppercase tracking-[0.12em] text-ink">
+                    {item.workType}
+                  </span>
+                )}
               </div>
               <div className="font-display text-[24px] leading-[1.1]">
                 {item.position}

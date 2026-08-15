@@ -5,5 +5,6 @@ export interface Experience {
   location: string,
   startDate:string,
   endDate?:string,
+  workType?:string,
   summary:string
 }
