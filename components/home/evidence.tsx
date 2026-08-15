@@ -141,7 +141,7 @@ export default function Evidence({ projects }: Props) {
             )}
             <div className="flex items-center justify-between gap-3 border-t border-ink/25 pt-3.5">
               <span className="font-mono text-xs text-ink-soft">
-                {featuredYear ? `${featuredYear} — Now` : "2024 — Now"}
+                {featuredYear ? `${featuredYear}` : "2024"}
               </span>
               <Link
                 href={`/projects/${featured.slug.current}`}

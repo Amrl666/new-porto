@@ -27,14 +27,14 @@ function Stack() {
       <main className="mx-auto w-full max-w-[1180px] flex-grow px-5 pb-[76px] sm:px-[30px]">
         <div className="mb-[30px] pt-[30px]">
           <div className="mb-[18px] flex items-center justify-between gap-4 border-b border-ink/25 pb-[9px] font-gothic text-[11px] font-bold uppercase tracking-[0.16em] text-ink-soft">
-            <span>The Workspace</span>
-            <span>Filed under: The Lab Report</span>
+            <span>The Lab Report</span>
+            <span>Filed under: Forensics</span>
           </div>
           <span className="block font-gothic text-xs font-bold uppercase tracking-[0.18em] text-ink">
             Forensics
           </span>
           <h1 className="mt-1.5 font-display text-[clamp(30px,4vw,46px)] font-normal leading-[1.02] tracking-[-0.015em]">
-            The Workspace
+            The Lab Report
           </h1>
           <p className="mt-3 max-w-[42ch] font-text text-[15px] leading-[1.55] text-ink-soft">
             A detailed inventory of the substances detected on the subject — the

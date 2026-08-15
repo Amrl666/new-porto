@@ -143,6 +143,9 @@ export default function IntroOverlay() {
 
   /** finish (k): exit class, then unmount + scroll to top + release the page. */
   const finish = useCallback(() => {
+    // Remember that the intro was seen so a refresh doesn't replay it
+    // (session cookie, same as the reference's `rt_intro_seen`).
+    document.cookie = "rt_intro_seen=1; path=/; SameSite=Lax";
     setExit(true);
     setTimeout(() => {
       setHidden(true);

@@ -29,7 +29,7 @@ export default function Footer() {
               Selected Works
             </a>
             <a className="link-pencil-bright mb-2.5 block w-fit font-text text-[15px] text-paper" href="#stack">
-              The Stack
+              The Lab Report
             </a>
             <a className="link-pencil-bright mb-2.5 block w-fit font-text text-[15px] text-paper" href="#contact">
               Contact

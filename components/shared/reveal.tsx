@@ -49,8 +49,13 @@ export default function RevealSystem() {
     const root = document.documentElement;
     root.classList.add("js-motion");
 
+    // Observe every `.rv` element — section headers use plain `.rv`
+    // containers whose `rv-word` / `rv-fade` children stay hidden until
+    // the container itself gets `.is-revealed` (the CSS keys off
+    // `.rv:not(.is-revealed)`). `.rv-settle` / `.rv-rule` / `.rv-develop`
+    // are `.rv` too, so this single selector covers everything.
     const targets = Array.from(
-      document.querySelectorAll<HTMLElement>(".rv-settle, .rv-rule, .rv-develop")
+      document.querySelectorAll<HTMLElement>(".rv")
     );
 
     if (typeof IntersectionObserver === "undefined") {

@@ -129,7 +129,7 @@ export function Guestbook({ initialMessages }: GuestbookProps) {
               required
               disabled={isPending}
               onChange={(e) => setMessageLength(e.target.value.length)}
-              placeholder="Leave a public architectural feedback or just say hello..."
+              placeholder="Leave public feedback on the architecture, or just say hello..."
               className="w-full resize-y border-2 border-ink bg-paper px-3.5 py-3 font-text text-[16px] leading-[1.5] text-ink placeholder:text-ink-faint focus:outline-none"
             />
             <div className="text-right font-mono text-[11px] text-ink-soft">

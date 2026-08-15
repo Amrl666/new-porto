@@ -53,7 +53,7 @@ export default function FrontPage({ userInfo }: Props) {
               style={{ ["--rv-delay" as string]: "200ms" }}
             >
               By <b className="text-ink">The Investigation Desk</b> ·{" "}
-              Reporting from Jakarta — on assignment at EXC Studio
+              Reporting from Jakarta
             </p>
             <div
               className="rv rv-settle mt-[22px] flex flex-wrap gap-3"

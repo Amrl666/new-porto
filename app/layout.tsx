@@ -3,7 +3,6 @@ import "./globals.css";
 import { Libre_Caslon_Display, Libre_Caslon_Text, Libre_Franklin, JetBrains_Mono } from "next/font/google";
 import { cn } from "@/lib/utils";
 import { Toaster } from "@/components/ui/toaster";
-import IntroOverlay from "@/components/shared/intro-overlay";
 import CursorMagnifier from "@/components/shared/cursor-magnifier";
 import RoughFilter from "@/components/shared/rough-filter";
 import RevealSystem from "@/components/shared/reveal";
@@ -69,7 +68,6 @@ export default function RootLayout({
         <Providers>
           <RevealSystem />
           <div className="relative z-[1] [overflow-x:clip]">{children}</div>
-          <IntroOverlay />
           <CursorMagnifier />
           <RoughFilter />
           <Toaster />
