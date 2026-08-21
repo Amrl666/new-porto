@@ -23,9 +23,9 @@ export default function FrontPage({ userInfo }: Props) {
   return (
     <section className="pb-2 pt-[30px]">
       <div className="mx-auto max-w-[1180px] px-5 sm:px-[30px]">
-        <div className="mb-[18px] flex items-center justify-between gap-4 border-b border-ink/25 pb-[9px] font-gothic text-[11px] font-bold uppercase tracking-[0.16em] text-ink-soft">
-          <span>Front Page</span>
-          <span>Filed under: Open Investigations</span>
+        <div className="mb-[18px] flex items-baseline justify-between gap-3 border-b border-ink/25 pb-[9px] font-gothic text-[11px] font-bold uppercase tracking-[0.16em] text-ink-soft">
+          <span className="whitespace-nowrap">Front Page</span>
+          <span className="min-w-0 truncate text-right text-[9px] font-semibold tracking-[0.1em] sm:text-[11px] sm:tracking-[0.16em]">Filed under: Open Investigations</span>
         </div>
 
         <div className="grid grid-cols-1 items-start gap-10 min-[940px]:grid-cols-[1.55fr_1fr]">

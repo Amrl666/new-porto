@@ -20,16 +20,16 @@ export default function Masthead() {
           </small>
         </h1>
 
-        <div className="mt-1 flex flex-wrap items-center justify-center gap-x-[22px] gap-y-1 border-y-2 border-ink py-[7px] font-gothic text-[11px] font-semibold uppercase tracking-[0.14em] text-ink-soft">
-          <span>
+        <div className="mt-1 flex flex-wrap items-center justify-center gap-x-3 gap-y-1 border-y-2 border-ink py-[7px] font-gothic text-[10px] font-semibold uppercase tracking-[0.12em] text-ink-soft sm:gap-x-[22px] sm:text-[11px] sm:tracking-[0.14em]">
+          <span className="whitespace-nowrap">
             <DateLine text={today} />
           </span>
-          <span className="h-[3px] w-[3px] rounded-full bg-ink-soft" />
-          <span>Vol. I</span>
-          <span className="h-[3px] w-[3px] rounded-full bg-ink-soft" />
-          <span>Selected Works &amp; Notes</span>
-          <span className="h-[3px] w-[3px] rounded-full bg-ink-soft" />
-          <span>Price: One Coffee</span>
+          <span className="hidden h-[3px] w-[3px] rounded-full bg-ink-soft sm:inline-block" />
+          <span className="whitespace-nowrap">Vol. I</span>
+          <span className="hidden h-[3px] w-[3px] rounded-full bg-ink-soft sm:inline-block" />
+          <span className="whitespace-nowrap">Selected Works &amp; Notes</span>
+          <span className="hidden h-[3px] w-[3px] rounded-full bg-ink-soft sm:inline-block" />
+          <span className="whitespace-nowrap">Price: One Coffee</span>
         </div>
       </div>
     </header>
