@@ -30,7 +30,7 @@ export default function BlogGrid({ posts }: Props) {
                 alt={post.title || "Blog post"}
                 fill
                 sizes="(max-width: 600px) 100vw, 50vw"
-                className="object-cover object-top grayscale contrast-[1.04] mix-blend-multiply transition-transform duration-500 ease-out group-hover:scale-[1.03]"
+                className="object-cover object-top grayscale contrast-[1.04] mix-blend-multiply transition-transform duration-500 ease-out group-hover:scale-[1.03] dark:mix-blend-normal"
               />
               <span className="absolute left-2.5 top-2.5 border-2 border-ink bg-paper-bright/85 px-2 py-0.5 font-gothic text-[10px] font-black uppercase tracking-[0.14em] text-stamp">
                 {post.publishedAt ? formatMMYY(post.publishedAt) : "Recent"}

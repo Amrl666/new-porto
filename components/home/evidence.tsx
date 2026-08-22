@@ -69,7 +69,7 @@ export default function Evidence({ projects }: Props) {
                   src={featuredImage}
                   fill
                   sizes="(max-width: 940px) 100vw, 540px"
-                  className="object-cover object-top grayscale contrast-[1.04] mix-blend-multiply transition-transform duration-500 ease-out group-hover:scale-[1.03]"
+                  className="object-cover object-top grayscale contrast-[1.04] mix-blend-multiply transition-transform duration-500 ease-out group-hover:scale-[1.03] dark:mix-blend-normal"
                 />
                 <span
                   aria-hidden="true"
@@ -157,7 +157,8 @@ export default function Evidence({ projects }: Props) {
         </article>
 
         {/* Grid of remaining exhibits */}
-        <div className="grid grid-cols-1 min-[600px]:grid-cols-2 min-[940px]:grid-cols-3">
+        {/* -mx compensates the cards' uniform px so col 1 stays flush with the header */}
+        <div className="grid grid-cols-1 min-[600px]:-mx-[26px] min-[600px]:grid-cols-2 min-[940px]:grid-cols-3">
           {exhibits.map((project, i) => (
             <ExhibitCard key={project._id} project={project} index={i} />
           ))}
@@ -179,7 +180,7 @@ function ExhibitCard({ project, index }: { project: Project; index: number }) {
 
   return (
     <article
-      className="rv rv-settle group relative flex flex-col border-t border-ink/25 py-[26px] pr-0 transition-colors hover:bg-paper-warm min-[600px]:border-r min-[600px]:border-ink/25 min-[600px]:pr-[26px] min-[600px]:[&:nth-child(2n)]:border-r-0 min-[600px]:[&:nth-child(2n)]:pr-0 min-[940px]:border-r min-[940px]:border-ink/25 min-[940px]:pr-[26px] min-[940px]:[&:nth-child(2n)]:border-r min-[940px]:[&:nth-child(2n)]:pr-[26px] min-[940px]:[&:nth-child(3n)]:border-r-0 min-[940px]:[&:nth-child(3n)]:pr-0"
+      className="rv rv-settle group relative flex flex-col border-t border-ink/25 py-[26px] transition-colors hover:bg-paper-warm min-[600px]:border-r min-[600px]:border-ink/25 min-[600px]:px-[26px] min-[600px]:[&:nth-child(2n)]:border-r-0 min-[940px]:[&:nth-child(2n)]:border-r min-[940px]:[&:nth-child(3n)]:border-r-0"
       style={{ ["--rv-delay" as string]: `${index * 60}ms` }}
     >
       <span className="font-gothic text-[11px] font-bold uppercase tracking-[0.14em] text-stamp">
@@ -204,7 +205,7 @@ function ExhibitCard({ project, index }: { project: Project; index: number }) {
               src={imageUrl}
               fill
               sizes="(max-width: 600px) 100vw, (max-width: 940px) 50vw, 360px"
-              className="object-cover object-top grayscale contrast-[1.04] mix-blend-multiply transition-transform duration-500 ease-out group-hover:scale-[1.03]"
+              className="object-cover object-top grayscale contrast-[1.04] mix-blend-multiply transition-transform duration-500 ease-out group-hover:scale-[1.03] dark:mix-blend-normal"
             />
             <span
               aria-hidden="true"

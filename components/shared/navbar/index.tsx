@@ -4,6 +4,7 @@ import { useState } from "react";
 import Link from "next/link";
 import { usePathname } from "next/navigation";
 import { cn } from "@/lib/utils";
+import { ThemeToggle } from "@/components/shared/theme-toggle";
 
 const NAV_LINKS = [
   { name: "Work", href: "#work" },
@@ -67,6 +68,16 @@ export default function Navbar() {
         <nav className="flex min-h-[50px] items-center justify-between gap-[18px] py-[9px]">
           <Link
             href="/"
+            onClick={(e) => {
+              // Next.js skips the scroll when already on "/" (esp. with a
+              // hash in the URL) — force it.
+              if (!isHome) return;
+              e.preventDefault();
+              if (window.scrollY > 0) {
+                window.scrollTo({ top: 0, behavior: "auto" });
+              }
+              window.history.replaceState(null, "", "/");
+            }}
             className="cursor-pointer whitespace-nowrap select-none font-display text-[22px] font-normal tracking-[-0.01em] text-ink"
           >
             Amirul Mabruri
@@ -74,6 +85,7 @@ export default function Navbar() {
 
           <div className="hidden items-center gap-[26px] min-[940px]:flex">
             {NAV_LINKS.map(renderLink)}
+            <ThemeToggle />
             {isHome ? (
               <a
                 href={hireHref}
@@ -81,14 +93,14 @@ export default function Navbar() {
                   e.preventDefault();
                   scrollTo(hireHref);
                 }}
-                className="inline-flex cursor-pointer items-center gap-2.5 whitespace-nowrap border-2 border-ink bg-ink px-[15px] py-2 font-gothic text-[11.5px] font-bold uppercase tracking-[0.1em] text-paper transition-colors duration-150 hover:bg-transparent hover:text-ink"
+                className="inline-flex h-[42px] cursor-pointer items-center justify-center gap-2.5 whitespace-nowrap border-2 border-ink bg-ink px-[15px] font-gothic text-[11.5px] font-bold uppercase tracking-[0.1em] text-paper transition-colors duration-150 hover:bg-transparent hover:text-ink"
               >
                 Hire him
               </a>
             ) : (
               <Link
                 href={hireHref}
-                className="inline-flex cursor-pointer items-center gap-2.5 whitespace-nowrap border-2 border-ink bg-ink px-[15px] py-2 font-gothic text-[11.5px] font-bold uppercase tracking-[0.1em] text-paper transition-colors duration-150 hover:bg-transparent hover:text-ink"
+                className="inline-flex h-[42px] cursor-pointer items-center justify-center gap-2.5 whitespace-nowrap border-2 border-ink bg-ink px-[15px] font-gothic text-[11.5px] font-bold uppercase tracking-[0.1em] text-paper transition-colors duration-150 hover:bg-transparent hover:text-ink"
               >
                 Hire him
               </Link>
@@ -96,6 +108,7 @@ export default function Navbar() {
           </div>
 
           <div className="flex items-center gap-3 min-[940px]:hidden">
+            <ThemeToggle />
             <span className="hidden min-[460px]:inline-flex">
               {isHome ? (
                 <a
@@ -104,14 +117,14 @@ export default function Navbar() {
                     e.preventDefault();
                     scrollTo(hireHref);
                   }}
-                  className="inline-flex cursor-pointer items-center gap-2.5 whitespace-nowrap border-2 border-ink bg-ink px-[15px] py-2 font-gothic text-[11.5px] font-bold uppercase tracking-[0.1em] text-paper transition-colors duration-150 hover:bg-transparent hover:text-ink"
+                  className="inline-flex h-[42px] cursor-pointer items-center justify-center gap-2.5 whitespace-nowrap border-2 border-ink bg-ink px-[15px] font-gothic text-[11.5px] font-bold uppercase tracking-[0.1em] text-paper transition-colors duration-150 hover:bg-transparent hover:text-ink"
                 >
                   Hire him
                 </a>
               ) : (
                 <Link
                   href={hireHref}
-                  className="inline-flex cursor-pointer items-center gap-2.5 whitespace-nowrap border-2 border-ink bg-ink px-[15px] py-2 font-gothic text-[11.5px] font-bold uppercase tracking-[0.1em] text-paper transition-colors duration-150 hover:bg-transparent hover:text-ink"
+                  className="inline-flex h-[42px] cursor-pointer items-center justify-center gap-2.5 whitespace-nowrap border-2 border-ink bg-ink px-[15px] font-gothic text-[11.5px] font-bold uppercase tracking-[0.1em] text-paper transition-colors duration-150 hover:bg-transparent hover:text-ink"
                 >
                   Hire him
                 </Link>

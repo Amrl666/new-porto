@@ -126,7 +126,7 @@ export default function FrontPage({ userInfo }: Props) {
                 fill
                 priority
                 sizes="(max-width: 940px) 100vw, 380px"
-                className="object-cover mix-blend-multiply"
+                className="object-cover mix-blend-multiply dark:mix-blend-normal"
               />
             </div>
             <p className="rv rv-settle mt-2 font-gothic text-[11px] font-medium leading-[1.4] tracking-[0.04em] text-ink-soft" style={{ ["--rv-delay" as string]: "240ms" }}>

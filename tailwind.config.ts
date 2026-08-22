@@ -53,21 +53,21 @@ const config: Config = {
           DEFAULT: 'hsl(var(--card))',
           foreground: 'hsl(var(--card-foreground))',
         },
-        // The Broadsheet palette
+        // The Broadsheet palette — channel vars, overridden by .dark in globals.css
         paper: {
-          DEFAULT: '#f4f1e9',
-          warm: '#efeadd',
-          deep: '#e7e0cf',
-          bright: '#fbfaf5',
+          DEFAULT: 'rgb(var(--paper) / <alpha-value>)',
+          warm: 'rgb(var(--paper-warm) / <alpha-value>)',
+          deep: 'rgb(var(--paper-deep) / <alpha-value>)',
+          bright: 'rgb(var(--paper-bright) / <alpha-value>)',
         },
         ink: {
-          DEFAULT: '#16140f',
-          soft: '#45413a',
-          faint: '#8b8678',
+          DEFAULT: 'rgb(var(--ink) / <alpha-value>)',
+          soft: 'rgb(var(--ink-soft) / <alpha-value>)',
+          faint: 'rgb(var(--ink-faint) / <alpha-value>)',
         },
         stamp: {
-          DEFAULT: '#a6382c',
-          bright: '#c9503f',
+          DEFAULT: 'rgb(var(--stamp) / <alpha-value>)',
+          bright: 'rgb(var(--stamp-bright) / <alpha-value>)',
         },
       },
       fontFamily: {

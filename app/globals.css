@@ -41,6 +41,17 @@
     --ring: 40 6% 8%;
  
     --radius: 0px;
+
+    /* Broadsheet palette (channels for rgb(var()/alpha) in tailwind) */
+    --paper: 244 241 233; /* #f4f1e9 */
+    --paper-warm: 239 234 221; /* #efeadd */
+    --paper-deep: 231 224 207; /* #e7e0cf */
+    --paper-bright: 251 250 245; /* #fbfaf5 */
+    --ink: 22 20 15; /* #16140f */
+    --ink-soft: 69 65 58; /* #45413a */
+    --ink-faint: 139 134 120; /* #8b8678 */
+    --stamp: 166 56 44; /* #a6382c */
+    --stamp-bright: 201 80 63; /* #c9503f */
   }
 
   .dark {
@@ -71,6 +82,17 @@
     --border: 40 33% 96%;
     --input: 40 8% 15%;
     --ring: 40 33% 96%;
+
+    /* Night edition — warm dark paper, light ink, brighter stamp */
+    --paper: 26 24 20; /* #1a1814 */
+    --paper-warm: 35 32 25; /* #232019 */
+    --paper-deep: 43 39 31; /* #2b271f */
+    --paper-bright: 32 29 23; /* #201d17 */
+    --ink: 237 233 222; /* #ede9de */
+    --ink-soft: 180 175 160; /* #b4afa0 */
+    --ink-faint: 122 116 102; /* #7a7466 */
+    --stamp: 201 80 63; /* #c9503f */
+    --stamp-bright: 224 107 87; /* #e06b57 */
   }
 }
  
@@ -96,8 +118,8 @@
 }
 
 ::selection {
-  background: var(--color-stamp, #a6382c);
-  color: var(--color-paper-bright, #fbfaf5);
+  background: rgb(var(--stamp));
+  color: rgb(var(--paper-bright));
 }
 
 /* Paper grain + scanlines fixed over everything */

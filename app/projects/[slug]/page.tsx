@@ -118,7 +118,7 @@ export default async function ProjectDetailPage({ params }: Props) {
                     fill
                     priority
                     sizes="(max-width: 940px) 100vw, 1100px"
-                    className="object-cover object-top grayscale contrast-[1.04] mix-blend-multiply"
+                    className="object-cover object-top grayscale contrast-[1.04] mix-blend-multiply dark:mix-blend-normal"
                   />
                 ) : (
                   <div className="flex h-full min-h-[240px] items-center justify-center font-gothic text-[11px] font-semibold uppercase tracking-[0.2em] text-ink-soft">

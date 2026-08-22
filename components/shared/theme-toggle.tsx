@@ -16,7 +16,7 @@ export function ThemeToggle() {
   if (!mounted) {
     return (
       <button
-        className="inline-flex items-center justify-center w-10 h-10 rounded-md"
+        className="inline-flex h-[42px] w-[42px] items-center justify-center border-2 border-ink"
         aria-label="Toggle theme"
         disabled
       />
@@ -30,7 +30,7 @@ export function ThemeToggle() {
   return (
     <button
       onClick={toggleTheme}
-      className="inline-flex items-center justify-center w-10 h-10 rounded-md text-foreground hover:bg-accent transition-colors"
+      className="inline-flex h-[42px] w-[42px] flex-none items-center justify-center border-2 border-ink text-ink transition-colors duration-150 hover:bg-ink hover:text-paper"
       aria-label={`Switch to ${theme === 'dark' ? 'light' : 'dark'} theme`}
     >
       <div className="relative w-5 h-5">

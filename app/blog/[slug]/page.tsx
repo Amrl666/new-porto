@@ -83,7 +83,7 @@ export default async function PostDetailPage({ params }: Props) {
                     fill
                     priority
                     sizes="(max-width: 940px) 100vw, 1100px"
-                    className="object-cover object-top grayscale contrast-[1.04] mix-blend-multiply"
+                    className="object-cover object-top grayscale contrast-[1.04] mix-blend-multiply dark:mix-blend-normal"
                   />
                 </div>
               </div>

@@ -27,7 +27,7 @@ export default function ProjectCard({ project }: Props) {
           alt={project.title}
           fill
           sizes="(max-width: 600px) 100vw, (max-width: 940px) 50vw, 360px"
-          className="object-cover object-top grayscale contrast-[1.04] mix-blend-multiply transition-transform duration-500 ease-out group-hover:scale-[1.03]"
+          className="object-cover object-top grayscale contrast-[1.04] mix-blend-multiply transition-transform duration-500 ease-out group-hover:scale-[1.03] dark:mix-blend-normal"
         />
         <span
           aria-hidden="true"
